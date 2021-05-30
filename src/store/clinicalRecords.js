@@ -1,27 +1,93 @@
 import axios from "./../config/axios";
 import api from "./../config/api";
+// данные для теста
+/**
+ * const fakeRecords = [
+  {
+    content: null,
+    createdon: "2021-05-30 13:00:00",
+    data:
+      '{"diagnos":"первичный диагноз от доктора 32","description":"test","recomendations":"test"}',
+    doctor_id: 32,
+    files: null,
+    id: 35,
+    patient_id: 68,
+    status_id: 1,
+    type_id: 1,
+  },
+  {
+    content: null,
+    createdon: "2021-05-30 15:57:36",
+    data:
+      '{"diagnos":"вторичный диагноз от доктора 32","description":"test","recomendations":"test"}',
+    doctor_id: 32,
+    files: null,
+    id: 35,
+    patient_id: 68,
+    status_id: 1,
+    type_id: 2,
+  },
+  {
+    content: null,
+    createdon: "2021-05-30 10:57:36",
+    data:
+      '{"diagnos":"вторичный диагноз от доктора 32","description":"test","recomendations":"test"}',
+    doctor_id: 32,
+    files: null,
+    id: 35,
+    patient_id: 68,
+    status_id: 1,
+    type_id: 2,
+  },
+  {
+    content: null,
+    createdon: "2021-05-30 09:57:36",
+    data:
+      '{"diagnos":"первычный диагноз от доктора 5","description":"test","recomendations":"test"}',
+    doctor_id: 5,
+    files: null,
+    id: 35,
+    patient_id: 68,
+    status_id: 1,
+    type_id: 1,
+  },
+  {
+    content: null,
+    createdon: "2021-05-30 14:57:36",
+    data:
+      '{"diagnos":"вторичный диагноз от доктора 5","description":"test","recomendations":"test"}',
+    doctor_id: 5,
+    files: null,
+    id: 35,
+    patient_id: 68,
+    status_id: 1,
+    type_id: 2,
+  },
+  {
+    content: null,
+    createdon: "2021-05-30 16:57:36",
+    data:
+      '{"diagnos":"вторичный диагноз от доктора 5","description":"test","recomendations":"test"}',
+    doctor_id: 5,
+    files: null,
+    id: 35,
+    patient_id: 68,
+    status_id: 1,
+    type_id: 2,
+  },
+];
+ */
 
 const state = {
   clinicalRecords: [],
 };
 const mutations = {
   SET_RECORDS(state, payload) {
-    // массив из айдишников докторов    
-    let doctorsId = [];
-    payload.map((record) => {
-      doctorsId.push(record.doctor_id);
-    });
-    doctorsId = [...new Set(doctorsId)];
-
-    // группировка посещений по докторам
-    const records = [];
-    doctorsId.map((e) => {
-      records.push({
-        doctor_id: e,
-        events: payload.filter((event) => e === event.doctor_id),
-      });
-    });
-    state.clinicalRecords = records;
+    /**
+     * данные для теста
+     * payload = [...payload, ...fakeRecords]
+     */
+    state.clinicalRecords = payload;
   },
 };
 const actions = {
