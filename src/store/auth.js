@@ -62,7 +62,6 @@ const actions = {
     window.localStorage.clear();
     router.push({ name: "Login" });
     delete axios.defaults.headers.common.Authorization;
-    console.log(axios.defaults.headers.common);
   },
   signup({ dispatch }, data) {
     return axios.post(api.patient_registration, data).then(async (res) => {
