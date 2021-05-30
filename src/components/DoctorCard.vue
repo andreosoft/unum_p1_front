@@ -1,18 +1,16 @@
 <template>
-  <v-card
-    class="doctor__card"
-    :height="300"
-    :elevation="hover ? 5 : 2"
-  >
-    <v-avatar tile class="doctor__card-avatar">
-      <img
-        :src="
-          doctor.photo && doctor.photo.includes('http')
-            ? doctor.photo
-            : '/images/doctor-placeholder.jpeg'
-        "
-      />
-    </v-avatar>
+  <v-card class="doctor__card" :elevation="hover ? 5 : 2">
+    <v-responsive :aspect-ratio="4 / 3">
+      <v-avatar tile class="doctor__card-avatar">
+        <img
+          :src="
+            doctor.photo && doctor.photo.includes('http')
+              ? doctor.photo
+              : '/images/doctor-placeholder.jpeg'
+          "
+        />
+      </v-avatar>
+    </v-responsive>
     <v-card-text>
       {{ doctor.name }}
     </v-card-text>
@@ -42,10 +40,7 @@ export default {
   width: 100%;
   &-avatar {
     width: 100% !important;
-    height: 200px !important;
-    // @media #{map-get($display-breakpoints, 'sm-and-down')} {
-    //   height: 150px !important;
-    // }
+    height: 100% !important;
   }
 }
 </style>
