@@ -93,7 +93,7 @@ export default {
         },
         {
           name: "Outpatient Card",
-          title: "Моя амбулаторная карта",
+          title: "Амбулаторная карта",
           icon: "mdi-chart-bar",
         },
         {
