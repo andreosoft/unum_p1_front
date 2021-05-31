@@ -1,0 +1,5 @@
+#!/bin/bash
+
+npm run build
+
+scp -i ~/.ssh/id_rsa2 -r -P 7951 dist/* andrey@81.163.28.27:/srv/unum/patient
