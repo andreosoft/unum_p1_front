@@ -20,13 +20,13 @@
             </v-img>
           </v-avatar>
           <div class="doctor-info__text-wrap">
-            <p class="doctor-info__text">
+            <p class="doctor-info__text mb-1">
               {{ getSecondName }}
             </p>
-            <p class="doctor-info__text">
+            <p class="doctor-info__text mb-1">
               {{ getFirstName }}
             </p>
-            <p class="doctor-info__text">
+            <p class="doctor-info__text mb-1">
               {{ getMiddleName }}
             </p>
             <p>

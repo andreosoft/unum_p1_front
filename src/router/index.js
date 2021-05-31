@@ -37,7 +37,7 @@ const routes = [
         component: () => import("./../views/OutpatientCard.vue"),
         meta: {
           requiresAuth: true,
-          title: "Моя амбулаторная карта",
+          title: "Амбулаторная карта",
         },
       },
       {

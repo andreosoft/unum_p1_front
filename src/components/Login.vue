@@ -10,9 +10,9 @@
           :error="$v.email.$error"
           @input="$v.email.$reset"
           :error-messages="
-            formValidationError && !$v.email.required ? 'Поле обязательно' : ''
+            formValidationError && !$v.email.required ? 'Поле обязательно' : formValidationError && !$v.email.emailValidation ? 'Введите правильный Email' : ''
           "
-          label="Логин"
+          label="Email"
           class="mb-2"
         ></v-text-field>
         <v-text-field
@@ -62,7 +62,7 @@ export default {
   validations: {
     email: {
       required,
-      // emailValidation: (email) => /.+@.+\..+/.test(email),
+      emailValidation: (email) => /.+@.+\..+/.test(email),
     },
     password: {
       required,

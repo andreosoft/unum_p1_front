@@ -3,32 +3,54 @@
     <h1>История посещений</h1>
     <v-expansion-panels>
       <v-expansion-panel
-        v-for="(recordGroup, index) in clinicalRecords"
+        v-for="(item, index) in formattedClinicalRecords"
         :key="index"
-        class="mb-1"
+        class="mb-2"
       >
         <v-expansion-panel-header>
-          {{ getDoctorName(recordGroup.doctor_id) }}
+          {{ JSON.parse(item.data).diagnos }}
         </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <v-card
-            v-for="event in recordGroup.events"
-            :key="event.id"
-            class="mb-3"
-          >
-            <v-card-text class="pa-2">
-              Диагноз - {{ JSON.parse(event.data).diagnos }}
-            </v-card-text>
-            <v-card-text class="pa-2">
-              Описание - {{ JSON.parse(event.data).description }}
-            </v-card-text>
-            <v-card-text class="pa-2">
-              Рекомендации - {{ JSON.parse(event.data).recomendations }}
-            </v-card-text>
+        <v-expansion-panel-content v-if="item.second_appointments.length">
+          <v-card>
+            <v-hover
+              v-for="(event, index) in item.second_appointments"
+              :key="index"
+            >
+              <template v-slot="{ hover }">
+                <v-card-text
+                  :class="{'record__card': hover}"
+                  @click="showAppointmentDialog(event)"
+                >
+                  {{ JSON.parse(event.data).diagnos }}
+                </v-card-text>
+              </template>
+            </v-hover>
           </v-card>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
+    <v-dialog
+      v-model="appointmentDetailsDialog"
+      v-if="selectedAppointment"
+      :max-width="600"
+    >
+      <v-card class="pa-4">
+        <v-card-title class="pa-0">
+          Лечащий врач -
+          {{ getDoctorName(selectedAppointment.doctor_id) }}
+        </v-card-title>
+        <v-card-title class="pa-0">
+          Диагноз -
+          {{ JSON.parse(selectedAppointment.data).diagnos }}
+        </v-card-title>
+        <v-card-title class="pa-0">
+          Дата записи - {{ selectedAppointment.createdon | formatDate }}
+        </v-card-title>
+        <v-card-title class="pa-0">
+          Время записи - {{ selectedAppointment.createdon | formatTime }}
+        </v-card-title>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -39,65 +61,56 @@ const { mapGetters: Getters_doctors } = createNamespacedHelpers("doctors");
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
 dayjs.locale("ru");
-const fakeAppointmentsData = [
-  {
-    diagnosis: "Простуда",
-    doctor: "Быков",
-    doctorPosition: "Терапевт",
-    appointmentDate: "2021-04-16",
-  },
-  {
-    diagnosis: "Артрит",
-    doctor: "Костоломов Илья Владимирович",
-    doctorPosition: "Травматолог",
-    appointmentDate: "2021-04-16",
-  },
-  {
-    diagnosis: "Кариес",
-    doctor: "Дуболом Раиса Витальевна",
-    doctorPosition: "Стоматолог",
-    appointmentDate: "2021-04-16",
-  },
-  {
-    diagnosis: "Пульпа",
-    doctor: "Дуболом Раиса Витальевна",
-    doctorPosition: "Стоматолог",
-    appointmentDate: "2021-04-16",
-  },
-  {
-    diagnosis: "ОРВ",
-    doctor: "Ольга Николаевна",
-    doctorPosition: "Семейный врач",
-    appointmentDate: "2021-04-16",
-  },
-  {
-    diagnosis: "Воспаление хитрости в животе",
-    doctor: "Наталья Петровна",
-    doctorPosition: "учитель математики",
-    appointmentDate: "2021-04-16",
-  },
-];
 export default {
   name: "OutpatientCard",
   data() {
     return {
-      events: fakeAppointmentsData,
+      appointmentDetailsDialog: false,
+      selectedAppointment: null,
     };
   },
   computed: {
     ...mapState(["clinicalRecords"]),
     ...Getters_doctors(["getDoctorName"]),
+    formattedClinicalRecords() {
+      const first_appointments = [];
+      const second_appointments = [];
+
+      this.clinicalRecords.map((event) => {
+        if (event.type_id === 1) {
+          first_appointments.push(event);
+        } else if (event.type_id === 2) {
+          second_appointments.push(event);
+        }
+      });
+
+      const result_array = [];
+
+      first_appointments.map((event) => {
+        event.second_appointments = [];
+        second_appointments.map((event2) => {
+          if (event.doctor_id === event2.doctor_id) {
+            event.second_appointments.push(event2);
+          }
+        });
+        result_array.push(event);
+      });
+      return result_array;
+    },
   },
   filters: {
     formatDate(value) {
-      return dayjs(value).format("D MMMM");
+      return dayjs(value).format("D MMMM YYYY");
     },
     formatTime(value) {
       return dayjs(value).format("HH:mm");
     },
   },
-  mounted() {
-    
+  methods: {
+    showAppointmentDialog(event) {
+      this.appointmentDetailsDialog = true;
+      this.selectedAppointment = event;
+    },
   },
 };
 </script>
@@ -105,5 +118,6 @@ export default {
 <style lang="scss" scoped>
 .record__card {
   cursor: pointer;
+  background-color: rgb(220, 220, 220);
 }
 </style>

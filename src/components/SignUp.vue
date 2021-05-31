@@ -5,17 +5,17 @@
         <div v-show="mainView === 0">
           <p class="form__title">Регистрация</p>
           <v-text-field
-            :error="$v.login.$error"
-            v-model="$v.login.$model"
-            label="Логин"
+            :error="$v.email.$error"
+            v-model="$v.email.$model"
+            label="Email"
             outlined
             dense
             size="31"
-            @input="$v.login.$reset"
+            @input="$v.email.$reset"
             :error-messages="
-              userError && !$v.login.required
+              userError && !$v.email.required
                 ? 'Поле обязательно'
-                : userError && !$v.login.emailValidation
+                : userError && !$v.email.emailValidation
                 ? 'Введите правильный Email'
                 : ''
             "
@@ -157,7 +157,7 @@ export default {
   data() {
     return {
       dialog: true,
-      login: "",
+      email: "",
       password: "",
       passwordConfirmation: "",
       phone: "",
@@ -174,7 +174,7 @@ export default {
     };
   },
   validations: {
-    login: {
+    email: {
       required,
       emailValidation: (email) => /.+@.+\..+/.test(email),
     },
@@ -201,12 +201,12 @@ export default {
       }
     },
     validateUser() {
-      const arr = ["login", "password", "passwordConfirmation"];
+      const arr = ["email", "password", "passwordConfirmation"];
       arr.map((el) => {
         this.$v[el].$touch();
       });
       if (
-        this.$v.login.$invalid ||
+        this.$v.email.$invalid ||
         this.$v.password.$invalid ||
         this.$v.passwordConfirmation.$invalid
       ) {
@@ -230,7 +230,7 @@ export default {
           secondname: this.secondname,
         },
         user: {
-          login: this.login,
+          login: this.email,
           phone: this.phone,
           lang: this.lang,
           country: this.country,

@@ -14,17 +14,14 @@
       <v-divider class="my-4"></v-divider>
       <div class="px-5 my-doctors">
         <h2>4 моих случайных врача</h2>
-        <DoctorCardList
-          slug="all-doctors"
-          :doctors="doctors.slice(0, 4)"
-        />
+        <DoctorCardList slug="all-doctors" :doctors="doctors.slice(0, 4)" />
       </div>
       <v-divider class="mt-4"></v-divider>
-      <div class='px-5'>
+      <div class="px-5">
         <h2 class="mb-3">Ваши записи</h2>
         <v-list class="px-5 pa-0 recommendations">
           <v-list-item
-            v-for="(item, index) in sorted.slice(0, 3)"
+            v-for="(item, index) in recentRecommendations.slice(0, 3)"
             :key="index"
             class="pa-0"
           >
@@ -42,9 +39,7 @@ import DoctorCardList from "../components/DoctorCardList.vue";
 import EventCardList from "../components/EventCardList.vue";
 import Loader from "../components/Loader";
 const { mapState } = createNamespacedHelpers("events");
-const {
-  mapState: State_records,
-} = createNamespacedHelpers("clinicalRecords");
+const { mapState: State_records } = createNamespacedHelpers("clinicalRecords");
 const { mapState: State_doctors } = createNamespacedHelpers("doctors");
 export default {
   name: "Home",
@@ -56,15 +51,10 @@ export default {
     dataFetched() {
       return this.eventsFetched && this.doctorsFetched;
     },
-    sorted() {
-      const events = [];
-      this.clinicalRecords.map((e) => {
-        e.events.map((i) => {
-          events.push(i);
-        });
-      });
-      events.sort((a, b) => new Date(b.createdon) - new Date(a.createdon));
-      return events;
+    recentRecommendations() {
+      return this.clinicalRecords.sort(
+        (a, b) => new Date(b.createdon) - new Date(a.createdon)
+      );
     },
   },
 };
