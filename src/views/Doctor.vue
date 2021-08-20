@@ -10,9 +10,8 @@
           <v-avatar size="200" class="mb-3">
             <v-img
               :src="
-                getSelectedDoctor.photo &&
-                getSelectedDoctor.photo.includes('http')
-                  ? getSelectedDoctor.photo
+                getSelectedDoctor.photo
+                  ? getPhotoURL(getSelectedDoctor.photo)
                   : '/images/doctor-placeholder.jpeg'
               "
               rounded
@@ -240,7 +239,11 @@ export default {
   },
   computed: {
     ...State_doctors(["selectedDoctorFetched", "doctorSchedule"]),
-    ...Getters_doctors(["getSelectedDoctor", "getDoctorSchedule"]),
+    ...Getters_doctors([
+      "getSelectedDoctor",
+      "getDoctorSchedule",
+      "getPhotoURL",
+    ]),
     ...State_events(["events"]),
     currentDate() {
       return dayjs(this.date).format("DD MMMM");

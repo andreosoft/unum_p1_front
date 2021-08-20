@@ -4,8 +4,8 @@
       <v-avatar tile class="doctor__card-avatar">
         <img
           :src="
-            doctor.photo && doctor.photo.includes('http')
-              ? doctor.photo
+            doctor.photo
+              ? `${getPhotoURL(this.doctor.photo)}?width=250&height=250`
               : '/images/doctor-placeholder.jpeg'
           "
         />
@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapGetters } = createNamespacedHelpers("doctors");
 export default {
   name: "DoctorCard",
   props: {
@@ -29,6 +31,9 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+  computed: {
+    ...mapGetters(["getPhotoURL"]),
   },
 };
 </script>
