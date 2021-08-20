@@ -51,7 +51,7 @@
             "
           ></v-text-field>
           <vue-phone-number-input
-            v-model="phone"
+            v-model="phoneModel"
             default-country-code="KG"
             show-code-on-list
             :disabled="phoneIsCorrect"
@@ -161,6 +161,7 @@ export default {
       password: "",
       passwordConfirmation: "",
       phone: "",
+      phoneModel: "",
       lang: "RU",
       country: "",
 
@@ -194,11 +195,8 @@ export default {
   },
   methods: {
     ...mapActions(["signup"]),
-    handler(s) {
-      if (s.isValid) {
-        // this.phoneIsCorrect = true;
-        return;
-      }
+    handler(val) {
+      this.phone = val.formatInternational;
     },
     validateUser() {
       const arr = ["email", "password", "passwordConfirmation"];

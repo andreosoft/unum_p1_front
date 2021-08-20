@@ -59,6 +59,15 @@ const routes = [
         },
       },
       {
+        path: "submit-access/:token",
+        name: "Submit access",
+        component: () => import("./../views/SubmitAccess.vue"),
+        meta: {
+          requiresAuth: true,
+          title: "Предоставить доступ",
+        },
+      },
+      {
         path: "/:slug/:id",
         name: "Doctor",
         component: () => import("./../views/Doctor.vue"),

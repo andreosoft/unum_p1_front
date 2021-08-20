@@ -24,6 +24,9 @@ const getters = {
     }
     return undefined;
   },
+  getPhotoURL: () => (imageId) => {
+    return api.get_photo + `/${imageId}`;
+  },
 };
 const mutations = {
   SET_DOCTORS(state, doctors) {
