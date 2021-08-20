@@ -35,9 +35,6 @@ export default {
   computed: {
     ...mapGetters(["getPhotoURL"]),
   },
-  mounted() {
-    // console.log(this);
-  },
 };
 </script>
 
