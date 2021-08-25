@@ -15,7 +15,7 @@
         ></div>
         <v-expansion-panel-header>
           {{ item.data | getDiagnos }} ({{ item.data | getCreatedDate }} -
-          {{ getDoctorSpecialty(item.doctor_id) }}
+          {{ getDoctorSpecialty(item.doctor_id).toLowerCase() }}
           {{ getDoctorName(item.doctor_id) }})
           <span
             v-show="index === panels"
@@ -35,11 +35,11 @@
                   :class="{ record__card: hover }"
                   @click="showAppointmentDialog(event)"
                 >
-                  {{ item.data | getDiagnos }} ({{
+                  {{ event.data | getDiagnos }} ({{
                     event.data | getCreatedDate
                   }}
                   -
-                  {{ getDoctorSpecialty(event.doctor_id) }}
+                  {{ getDoctorSpecialty(event.doctor_id).toLowerCase() }}
                   {{ getDoctorName(event.doctor_id) }})
                 </v-card-text>
               </template>
@@ -104,28 +104,6 @@
             </tbody>
           </template>
         </v-simple-table>
-        <!-- <v-card-title class="pa-0">
-          Лечащий врач -
-          {{ getDoctorName(selectedAppointment.doctor_id) }}
-        </v-card-title>
-        <v-card-title class="pa-0">
-          Диагноз -
-          {{ JSON.parse(selectedAppointment.data).diagnos }}
-        </v-card-title>
-        <v-card-title v-show="getDescription.length" class="pa-0">
-          Описание -
-          {{ getDescription }}
-        </v-card-title>
-        <v-card-title v-show="getRecommendations.length" class="pa-0">
-          Рекомендации -
-          {{ getRecommendations }}
-        </v-card-title>
-        <v-card-title class="pa-0">
-          Дата записи - {{ selectedAppointment.createdon | formatDate }}
-        </v-card-title>
-        <v-card-title class="pa-0">
-          Время записи - {{ selectedAppointment.createdon | formatTime }}
-        </v-card-title> -->
       </v-card>
     </v-dialog>
   </div>
