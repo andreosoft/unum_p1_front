@@ -12,6 +12,7 @@ const api = {
   get_clinical_record: "/patient/clinical_record",
   get_photo: "http://api.neomedy.com/api/image/download",
   submit_access: "/patient/submit-access/", // /:token
+  get_file: "/file/download",
 };
 
 export default api;
