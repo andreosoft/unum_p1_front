@@ -70,7 +70,7 @@
                     :key="key"
                   >
                     <v-expansion-panel-header>
-                      {{ key | formatDate }}
+                      {{ key | $_formatDate }}
                     </v-expansion-panel-header>
                     <v-expansion-panel-content>
                       <v-container>
@@ -137,8 +137,8 @@
                           }
                         "
                       >
-                        {{ event.start | formatDate }}
-                        {{ event.start | formatTime }}
+                        {{ event.start | $_formatDate }}
+                        {{ event.start | $_formatTime }}
                       </v-btn>
                     </v-col>
                   </v-row>
@@ -199,6 +199,7 @@ import { createNamespacedHelpers } from "vuex";
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
 import Loader from "./../components/Loader";
+import filters from "./../mixins/filters";
 dayjs.locale("ru");
 const {
   mapState: State_doctors,
@@ -210,6 +211,7 @@ const {
   mapState: State_events,
 } = createNamespacedHelpers("events");
 export default {
+  mixins: [filters],
   name: "Doctor",
   components: {
     Loader,
@@ -228,14 +230,6 @@ export default {
       eventIdToDelete: null,
       drawer: false,
     };
-  },
-  filters: {
-    formatDate(value) {
-      return dayjs(value).format("D MMMM");
-    },
-    formatTime(value) {
-      return dayjs(value).format("HH:mm");
-    },
   },
   computed: {
     ...State_doctors(["selectedDoctorFetched", "doctorSchedule"]),
