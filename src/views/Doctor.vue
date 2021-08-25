@@ -28,9 +28,13 @@
             <p class="doctor-info__text mb-1">
               {{ getMiddleName }}
             </p>
-            <p>
+            <p
+              v-if="
+                getSelectedDoctorSpecialty && getSelectedDoctorSpecialty.length
+              "
+            >
               Должность -
-              {{ getSelectedDoctor.medical_specialty || "Должность врача" }}
+              {{ getSelectedDoctorSpecialty }}
             </p>
           </div>
         </div>
@@ -61,9 +65,13 @@
 
         <transition name="slide-fade" mode="out-in">
           <div v-if="mainView === 'appointment'" key="appointment">
-            <v-card class="mb-5">
-              <v-card-title>Расписание врача</v-card-title>
-              <v-card-text>
+            <v-card class="mb-5 pa-4">
+              <v-card-title
+                class="pa-0"
+                :class="{ 'mb-4': Object.keys(doctorSchedule).length }"
+                >Расписание врача</v-card-title
+              >
+              <v-card-text class="pa-0">
                 <v-expansion-panels>
                   <v-expansion-panel
                     v-for="(timeArray, key) in doctorSchedule"
@@ -172,20 +180,28 @@
                 >
               </v-list>
               <v-list>
-                <v-list-item>
+                <v-list-item
+                  v-if="
+                    getSelectedDoctorSpecialty &&
+                      getSelectedDoctorSpecialty.length
+                  "
+                >
                   Специальность -
-                  {{ getSelectedDoctor.medical_specialty || "Специальность" }}
+                  {{ getSelectedDoctorSpecialty }}
                 </v-list-item>
                 <v-list-item>
                   Образование -
                   {{ getSelectedDoctor.medical_university || "Образование" }}
                 </v-list-item>
               </v-list>
-              <v-list>
-                <v-list-item>
-                  Текстовое поле с описанием повышения квалификации
-                </v-list-item>
-              </v-list>
+              <div v-if="getQualification.length">
+                <v-card-title class="pb-2">
+                  Повышение квалификации
+                </v-card-title>
+                <v-card-text style="white-space: pre;">
+                  {{ getQualification }}
+                </v-card-text>
+              </div>
             </v-card>
           </div>
         </transition>
@@ -232,11 +248,16 @@ export default {
     };
   },
   computed: {
-    ...State_doctors(["selectedDoctorFetched", "doctorSchedule"]),
+    ...State_doctors([
+      "selectedDoctorFetched",
+      "doctorSchedule",
+      "selectedDoctor",
+    ]),
     ...Getters_doctors([
       "getSelectedDoctor",
       "getDoctorSchedule",
       "getPhotoURL",
+      "getSelectedDoctorSpecialty",
     ]),
     ...State_events(["events"]),
     currentDate() {
@@ -258,6 +279,12 @@ export default {
           (event) => event.doctor_id === Number(this.$route.params.id)
         );
       return events;
+    },
+    getQualification() {
+      return (
+        this.selectedDoctor &&
+        JSON.parse(this.selectedDoctor.info).qualification
+      );
     },
   },
   methods: {
@@ -292,7 +319,6 @@ export default {
         eventId: this.eventIdToDelete,
         doctorId: this.$route.params.id,
       });
-      // this.fetchDoctorSchedule(this.$route.params.id);
     },
   },
   async created() {
