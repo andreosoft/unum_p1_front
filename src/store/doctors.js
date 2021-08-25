@@ -28,10 +28,18 @@ const getters = {
     return api.get_photo + `/${imageId}`;
   },
   getDoctorSpecialty: (state) => (doctorId) => {
-    const doctor = state.doctors.filter((doc) => doc.id === doctorId);
+    const doctor = state.doctors.find((doc) => doc.id === doctorId);
     try {
-      if (!doctor[0] || !doctor[0].info.doctor_specialty) throw Error;
-      return doctor[0].info.doctor_specialty.toLowerCase();
+      if (!doctor) throw Error;
+      return JSON.parse(doctor.info).doctor_specialty;
+    } catch (err) {
+      return "";
+    }
+  },
+  getSelectedDoctorSpecialty: (state) => {
+    try {
+      const parsedInfo = JSON.parse(state.selectedDoctor.info);
+      return parsedInfo.doctor_specialty;
     } catch (err) {
       return "";
     }
