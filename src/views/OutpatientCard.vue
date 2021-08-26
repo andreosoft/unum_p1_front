@@ -15,7 +15,11 @@
         ></div>
         <v-expansion-panel-header>
           {{ item.data | getDiagnos }} ({{ item.data | getCreatedDate }} -
-          {{ getDoctorSpecialty(item.doctor_id).toLowerCase() }}
+          {{
+            getDoctorSpecialty(item.doctor_id) &&
+              getDoctorSpecialty(item.doctor_id).toLowerCase()
+          }}
+          <!-- <pre>{{ getDoctorSpecialty(item.doctor_id) }}</pre> -->
           {{ getDoctorName(item.doctor_id) }})
           <span
             v-show="index === panels"
@@ -220,6 +224,9 @@ export default {
     download(id) {
       return `http://api.neomedy.com/api${api.get_file}/${id}`;
     },
+  },
+  mounted() {
+    console.log(this.formattedClinicalRecords);
   },
 };
 </script>
