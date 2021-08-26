@@ -47,10 +47,16 @@ const actions = {
   confirmLogin({ commit, dispatch }, login) {
     return axios.get(api.confirm_login, { params: { login } }).then((res) => {
       if (!res.data.data) {
-        dispatch("alerts/addAlert", {
-          type: "error",
-          text: "Профиль не найден",
-        });
+        dispatch(
+          "alerts/addAlert",
+          {
+            type: "error",
+            text: "Профиль не найден",
+          },
+          {
+            root: true,
+          }
+        );
         return res.data.data;
       }
       commit("SET_AUTH_STATUS", true);
@@ -73,9 +79,25 @@ const actions = {
       dispatch("fetchUserProfile");
     });
   },
-  fetchUserProfile({ commit }) {
+  fetchUserProfile({ commit, dispatch }) {
     return axios.get(api.get_profile).then((res) => {
-      commit("SET_USER_PROFILE", res.data.profile);
+      try {
+        if (res.data.profile.role !== 1) throw Error;
+        commit("SET_USER_PROFILE", res.data.profile);
+      } catch (err) {
+        dispatch(
+          "alerts/addAlert",
+          {
+            type: "error",
+            text: "Профиль не найден",
+          },
+          {
+            root: true,
+          }
+        );
+        window.localStorage.clear();
+        router.push({ name: "Login" });
+      }
     });
   },
 };

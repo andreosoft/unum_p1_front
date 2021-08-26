@@ -40,7 +40,12 @@ export default {
   },
 };
 </script>
-
+<style lang="scss">
+.form__title {
+  font-size: 36px;
+  font-weight: bold;
+}
+</style>
 <style lang="scss" scoped>
 .alerts {
   position: fixed;

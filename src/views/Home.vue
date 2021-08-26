@@ -16,19 +16,19 @@
         <h2>4 моих случайных врача</h2>
         <DoctorCardList slug="all-doctors" :doctors="doctors.slice(0, 4)" />
       </div>
-      <v-divider class="mt-4"></v-divider>
-      <div class="px-5">
-        <h2 class="mb-3">Ваши записи</h2>
+      <!-- <v-divider class="mt-4"></v-divider> -->
+      <!-- <div class="px-5" v-if="recentRecommendations.length">
+        <h2 class="mb-3">Рекомендации</h2>
         <v-list class="px-5 pa-0 recommendations">
           <v-list-item
             v-for="(item, index) in recentRecommendations.slice(0, 3)"
             :key="index"
             class="pa-0"
           >
-            {{ JSON.parse(item.data).diagnos }}
+            {{ JSON.parse(item.data).recomendations }}
           </v-list-item>
         </v-list>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

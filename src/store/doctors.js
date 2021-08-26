@@ -27,6 +27,23 @@ const getters = {
   getPhotoURL: () => (imageId) => {
     return api.get_photo + `/${imageId}`;
   },
+  getDoctorSpecialty: (state) => (doctorId) => {
+    const doctor = state.doctors.find((doc) => doc.id === doctorId);
+    try {
+      if (!doctor) throw Error;
+      return JSON.parse(doctor.info).doctor_specialty;
+    } catch (err) {
+      return "";
+    }
+  },
+  getSelectedDoctorSpecialty: (state) => {
+    try {
+      const parsedInfo = JSON.parse(state.selectedDoctor.info);
+      return parsedInfo.doctor_specialty;
+    } catch (err) {
+      return "";
+    }
+  },
 };
 const mutations = {
   SET_DOCTORS(state, doctors) {
