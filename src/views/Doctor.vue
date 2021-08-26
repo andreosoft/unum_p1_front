@@ -18,23 +18,24 @@
             >
             </v-img>
           </v-avatar>
+          <ContactButtons :email="getEmail" :phone="getPhone" />
           <div class="doctor-info__text-wrap">
             <p class="doctor-info__text mb-1">
               {{ getSecondName }}
-            </p>
-            <p class="doctor-info__text mb-1">
               {{ getFirstName }}
-            </p>
-            <p class="doctor-info__text mb-1">
               {{ getMiddleName }}
             </p>
-            <p
-              v-if="
-                getSelectedDoctorSpecialty && getSelectedDoctorSpecialty.length
-              "
-            >
-              Должность -
-              {{ getSelectedDoctorSpecialty }}
+            <p class="mb-1 doctor-info__text doctor-info__text--spec">
+              <span
+                v-if="
+                  getSelectedDoctorSpecialty &&
+                    getSelectedDoctorSpecialty.length
+                "
+                >{{ getSelectedDoctorSpecialty }}</span
+              >
+              <span v-else class="grey--text text--lighten-1">
+                Специальность не указана
+              </span>
             </p>
           </div>
         </div>
@@ -67,7 +68,7 @@
           <div v-if="mainView === 'appointment'" key="appointment">
             <v-card class="mb-5 pa-4">
               <v-card-title
-                class="pa-0"
+                class="pa-0 section__title"
                 :class="{ 'mb-4': Object.keys(doctorSchedule).length }"
                 >Расписание врача</v-card-title
               >
@@ -123,7 +124,7 @@
             </v-card>
 
             <v-card v-if="getEventsByDoctor.length">
-              <v-card-title class="pa-3"
+              <v-card-title class="pa-3 section__title"
                 >Ваши записи к этому доктору</v-card-title
               >
               <v-card-text class="pa-0">
@@ -163,7 +164,7 @@
               </v-dialog>
             </v-card>
             <v-card v-else>
-              <v-card-title>
+              <v-card-title class="section__title">
                 Вы не записывались на прием к этому доктору
               </v-card-title>
             </v-card>
@@ -171,12 +172,12 @@
           <div v-else key="information">
             <v-card>
               <v-list>
-                <v-list-item>Имя - {{ getSelectedDoctor.name }}</v-list-item>
+                <v-list-item>Имя: {{ getSelectedDoctor.name }}</v-list-item>
                 <v-list-item>
-                  Страна - {{ getSelectedDoctor.country || "Страна" }}
+                  Страна: {{ getSelectedDoctor.country || "Страна" }}
                 </v-list-item>
                 <v-list-item
-                  >Язык - {{ getSelectedDoctor.lang || "ru" }}</v-list-item
+                  >Язык: {{ getSelectedDoctor.lang || "ru" }}</v-list-item
                 >
               </v-list>
               <v-list>
@@ -186,16 +187,16 @@
                       getSelectedDoctorSpecialty.length
                   "
                 >
-                  Специальность -
+                  Специальность:
                   {{ getSelectedDoctorSpecialty }}
                 </v-list-item>
                 <v-list-item>
-                  Образование -
+                  Образование:
                   {{ getSelectedDoctor.medical_university || "Образование" }}
                 </v-list-item>
               </v-list>
               <div v-if="getQualification.length">
-                <v-card-title class="pb-2">
+                <v-card-title class="pb-2 section__title">
                   Повышение квалификации
                 </v-card-title>
                 <v-card-text style="white-space: pre;">
@@ -215,6 +216,7 @@ import { createNamespacedHelpers } from "vuex";
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
 import Loader from "./../components/Loader";
+import ContactButtons from "./../components/ContactButtons.vue";
 import filters from "./../mixins/filters";
 dayjs.locale("ru");
 const {
@@ -231,6 +233,7 @@ export default {
   name: "Doctor",
   components: {
     Loader,
+    ContactButtons,
   },
   data() {
     return {
@@ -286,6 +289,12 @@ export default {
         JSON.parse(this.selectedDoctor.info).qualification
       );
     },
+    getEmail() {
+      return this.selectedDoctor && this.selectedDoctor.email;
+    },
+    getPhone() {
+      return this.selectedDoctor && this.selectedDoctor.phone;
+    },
   },
   methods: {
     ...Actions_doctors(["fetchDoctorById", "fetchDoctorSchedule"]),
@@ -325,6 +334,9 @@ export default {
     this.fetchDoctorById(this.$route.params.id);
     this.fetchDoctorSchedule(this.$route.params.id);
   },
+  mounted() {
+    console.log(this.selectedDoctor);
+  },
 };
 </script>
 
@@ -339,6 +351,9 @@ export default {
     font-size: 10px;
   }
 }
+.section__title {
+  font-family: "Exo 2", sans-serif;
+}
 .doctor-info {
   align-items: center;
   flex-direction: column;
@@ -347,7 +362,16 @@ export default {
   max-width: 200px;
 }
 .doctor-info__text {
-  font-weight: 800;
+  font-weight: 600;
+  text-align: center;
+  font-size: 22px;
+  line-height: 26px;
+  font-family: "Exo 2", sans-serif;
+}
+.doctor-info__text--spec {
+  font-weight: normal;
+  font-size: inherit;
+  font-family: inherit;
 }
 .slide-fade-enter-active,
 .slide-fade-leave-active {
