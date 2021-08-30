@@ -41,6 +41,7 @@ export default {
 };
 </script>
 <style lang="scss">
+@import url("https://fonts.googleapis.com/css2?family=Exo+2:wght@500;600&display=swap");
 .form__title {
   font-size: 36px;
   font-weight: bold;
