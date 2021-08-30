@@ -4,7 +4,7 @@
     <div v-else class="pb-5 pt-2">
       <div class="px-5 events">
         <div v-if="events.length">
-          <h2 class="mb-3">Ваши записи</h2>
+          <h2 class="mb-3">Записи к врачам</h2>
           <EventCardList :events="events" />
         </div>
         <div v-else>
@@ -13,7 +13,7 @@
       </div>
       <v-divider class="my-4"></v-divider>
       <div class="px-5 my-doctors">
-        <h2>4 моих случайных врача</h2>
+        <h2>Мои врачи</h2>
         <DoctorCardList slug="all-doctors" :doctors="doctors.slice(0, 4)" />
       </div>
       <!-- <v-divider class="mt-4"></v-divider> -->
