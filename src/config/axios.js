@@ -1,27 +1,18 @@
-import axios from 'axios'
+import axios from "axios";
+import store from "./../store";
 
+const localStorage = JSON.parse(window.localStorage.getItem("neomedy")) || "";
 
+axios.defaults.baseURL = "https://api.neomedy.com/api";
+axios.defaults.headers.common["Authorization"] = localStorage.token;
 
-const localStorage = JSON.parse(window.localStorage.getItem('neomedy')) || ''
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response.status === 403) {
+      store.dispatch("auth/logout");
+    }
+  }
+);
 
-
-axios.defaults.baseURL = 'http://api.neomedy.com/api'
-axios.defaults.headers.common['Authorization'] = localStorage.token
-
-// const config = {
-//   baseURL: 'http://api.neomedy.com/api',
-//   headers: {}
-// }
-
-// if (localStorage) {
-//   config.headers.Authorization = localStorage.token
-// }
-
-// const axiosInstance = axios.create(config)
-
-// axiosInstance.interceptors.request.use(config => {
-
-//   return config
-// })
-
-export default axios
+export default axios;
