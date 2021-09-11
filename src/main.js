@@ -6,6 +6,7 @@ import vuetify from './plugins/vuetify'
 import Vuelidate from 'vuelidate'
 import VuePhoneNumberInput from 'vue-phone-number-input';
 import 'vue-phone-number-input/dist/vue-phone-number-input.css';
+import './registerServiceWorker'
 
 
 Vue.use(Vuelidate)
