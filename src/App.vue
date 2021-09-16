@@ -75,3 +75,17 @@ export default {
   position: absolute;
 }
 </style>
+<style lang="scss">
+.position-relative {
+  position: relative !important;
+}
+.position-absolute {
+  position: absolute !important;
+}
+.justify-content-center {
+  justify-content: center;
+}
+.align-items-center {
+  align-items: center;
+}
+</style>
