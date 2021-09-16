@@ -92,7 +92,7 @@ export default {
         {
           name: "Chats",
           title: "Чаты",
-          icon: "mdi-chat",
+          icon: "mdi-message-text",
         },
         {
           name: "My Doctors",
