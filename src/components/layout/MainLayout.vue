@@ -1,25 +1,18 @@
 <template>
   <div class="main-layout__wrap">
-    <v-app-bar :color="'lighten-2'" id="app-bar" fixed app flat height="60">
-      <v-btn
-        v-show="$vuetify.breakpoint.mdAndUp"
-        class="mr-3"
-        elevation="0"
-        fab
-        small
-        @click="$router.go(-1)"
-      >
-        <v-icon> mdi-arrow-left </v-icon>
-      </v-btn>
-      <v-btn
-        v-show="$vuetify.breakpoint.smAndDown"
-        class="mr-3"
-        elevation="0"
-        fab
-        small
-        @click="drawer = true"
-      >
-        <v-icon> mdi-arrow-left </v-icon>
+    <v-app-bar
+      v-if="
+        $vuetify.breakpoint.smAndDown ? !$route.meta.hideMobileTopNavbar : true
+      "
+      :color="'lighten-2'"
+      id="app-bar"
+      fixed
+      app
+      flat
+      height="60"
+    >
+      <v-btn class="mr-3" elevation="0" fab small @click="drawer = !drawer">
+        <v-icon> mdi-menu </v-icon>
       </v-btn>
       <v-toolbar-title>{{ $route.meta.title }}</v-toolbar-title>
     </v-app-bar>
@@ -95,6 +88,11 @@ export default {
           name: "Outpatient Card",
           title: "Амбулаторная карта",
           icon: "mdi-chart-bar",
+        },
+        {
+          name: "Chats",
+          title: "Чаты",
+          icon: "mdi-chat",
         },
         {
           name: "My Doctors",
