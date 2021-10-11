@@ -134,7 +134,7 @@ router.beforeEach(async (to, from, next) => {
             axios.defaults.headers.common.Authorization = JSON.parse(
               data
             ).token;
-
+            store.dispatch("auth/fetchUserProfile");
             return next();
           } else {
             return next({

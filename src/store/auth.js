@@ -45,21 +45,7 @@ const actions = {
   },
   confirmLogin({ commit, dispatch }, login) {
     return axios.get(api.confirm_login, { params: { login } }).then((res) => {
-      if (!res.data.data) {
-        dispatch(
-          "alerts/addAlert",
-          {
-            type: "error",
-            text: "Профиль не найден",
-          },
-          {
-            root: true,
-          }
-        );
-        return res.data.data;
-      }
       commit("SET_AUTH_STATUS", true);
-      dispatch("fetchUserProfile");
       return res.data.data;
     });
   },
@@ -70,12 +56,26 @@ const actions = {
     delete axios.defaults.headers.common.Authorization;
   },
   signup({ dispatch }, data) {
-    return axios.post(api.patient_registration, data).then(async (res) => {
-      await dispatch("login", {
-        email: data.user.login,
-        password: data.user.password,
-      });
-      dispatch("fetchUserProfile");
+    return dispatch("confirmLogin", data.user.login).then((status) => {
+      if (!status) {
+        return axios.post(api.patient_registration, data).then(async (res) => {
+          await dispatch("login", {
+            email: data.user.login,
+            password: data.user.password,
+          });
+          dispatch("fetchUserProfile");
+        });
+      }
+      dispatch(
+        "alerts/addAlert",
+        {
+          type: "error",
+          text: "Данный Email уже занят",
+        },
+        {
+          root: true,
+        }
+      );
     });
   },
   fetchUserProfile({ commit, dispatch }) {
