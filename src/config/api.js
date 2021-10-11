@@ -4,6 +4,7 @@ const api = {
   get_token: "/signup/get_token", // post
   get_profile: "signup/get_profile",
   all_doctors: "/patient/doctor", // get
+  my_doctors: "/patient/my_doctors",
   single_doctor: "/patient/doctor/", // + id get
   doctor_schedule: "/patient/schedule/doctor/", // + id get
   set_event: "/patient/schedule",
