@@ -5,6 +5,7 @@ import router from "./../router";
 const state = {
   authStatus: false,
   userProfile: null,
+  isProfileUpdating: false,
 };
 
 const mutations = {
@@ -13,6 +14,28 @@ const mutations = {
   },
   SET_USER_PROFILE(state, userProfile) {
     state.userProfile = userProfile;
+  },
+  SET_USER_PROFILE_NAME(state, name) {
+    state.userProfile.name = name;
+  },
+  SET_USER_PROFILE_BIRTHDAY(state, date) {
+    state.userProfile.birthday = date;
+  },
+  SET_USER_PROFILE_PHONES(state, phone) {
+    state.userProfile.phones = phone;
+  },
+  SET_USER_PROFILE_EMAIL(state, email) {
+    state.userProfile.email = email;
+  },
+  SET_USER_PROFILE_LANG(state, lang) {
+    state.userProfile.lang = lang;
+    console.log(lang, state.userProfile.lang);
+  },
+  SET_USER_PROFILE_COUNTRY(state, country) {
+    state.userProfile.country = country;
+  },
+  SET_PROFILE_UPDATING_STATE(state, value) {
+    state.isProfileUpdating = value;
   },
 };
 
@@ -81,8 +104,7 @@ const actions = {
   fetchUserProfile({ commit, dispatch }) {
     return axios.get(api.get_profile).then((res) => {
       try {
-        if (res.data.profile.role !== 1) throw Error;
-        commit("SET_USER_PROFILE", res.data.profile);
+        commit("SET_USER_PROFILE", res.data.data);
       } catch (err) {
         dispatch(
           "alerts/addAlert",
@@ -97,6 +119,15 @@ const actions = {
         window.localStorage.clear();
         router.push({ name: "Login" });
       }
+    });
+  },
+  updateDoctorProfile({ state, commit, dispatch }) {
+    console.log("saving...");
+    commit("SET_PROFILE_UPDATING_STATE", true);
+    return axios.post(api.update_profile, state.userProfile).then(() => {
+      commit("SET_PROFILE_UPDATING_STATE", false);
+      dispatch("fetchUserProfile");
+      console.log("saved");
     });
   },
 };
