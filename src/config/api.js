@@ -2,7 +2,8 @@ const api = {
   patient_registration: "/signup/registration/patient", // post
   confirm_login: "/signup/login_exists", // get
   get_token: "/signup/get_token", // post
-  get_profile: "signup/get_profile",
+  get_profile: "patient/profile",
+  update_profile: "patient/profile", //post
   all_doctors: "/patient/doctor", // get
   my_doctors: "/patient/my_doctors",
   single_doctor: "/patient/doctor/", // + id get
