@@ -87,17 +87,6 @@
             <v-text-field
               outlined
               dense
-              v-model="$v.name.$model"
-              :error="$v.name.$error"
-              @input="$v.name.$reset"
-              :error-messages="
-                patientError && !$v.name.required ? 'Поле обязательно' : ''
-              "
-              label="Имя"
-            ></v-text-field>
-            <v-text-field
-              outlined
-              dense
               v-model="$v.surname.$model"
               @input="$v.surname.$reset"
               :error="$v.surname.$error"
@@ -105,6 +94,17 @@
                 patientError && !$v.surname.required ? 'Поле обязательно' : ''
               "
               label="Фамилия"
+            ></v-text-field>
+            <v-text-field
+              outlined
+              dense
+              v-model="$v.name.$model"
+              :error="$v.name.$error"
+              @input="$v.name.$reset"
+              :error-messages="
+                patientError && !$v.name.required ? 'Поле обязательно' : ''
+              "
+              label="Имя"
             ></v-text-field>
             <v-text-field
               outlined
