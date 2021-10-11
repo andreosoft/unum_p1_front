@@ -112,13 +112,14 @@ export default {
   },
   methods: {
     ...mapActions(["logout"]),
-    ...Action_doctors(["fetchDoctors"]),
+    ...Action_doctors(["fetchDoctors", "fetchMyDoctors"]),
     ...Action_events(["fetchEvents"]),
     ...Acition_clinicalRecords(["fetchClinicalRecords"]),
   },
   created() {
     this.fetchEvents();
     this.fetchDoctors();
+    this.fetchMyDoctors();
     this.fetchClinicalRecords();
   },
 };

@@ -12,9 +12,12 @@
         </div>
       </div>
       <v-divider class="my-4"></v-divider>
-      <div class="px-5 my-doctors">
+      <div v-if="myDoctors.length" class="px-5">
         <h2>Мои врачи</h2>
-        <DoctorCardList slug="all-doctors" :doctors="doctors.slice(0, 4)" />
+        <DoctorCardList slug="all-doctors" :doctors="myDoctors.slice(0, 4)" />
+      </div>
+      <div v-else class="px-5">
+        <h2>У вас нет врачей, к которым вы записаны</h2>
       </div>
       <!-- <v-divider class="mt-4"></v-divider> -->
       <!-- <div class="px-5" v-if="recentRecommendations.length">
@@ -46,10 +49,10 @@ export default {
   components: { DoctorCardList, EventCardList, Loader },
   computed: {
     ...mapState(["events", "eventsFetched"]),
-    ...State_doctors(["doctors", "doctorsFetched"]),
+    ...State_doctors(["myDoctors", "myDoctorsFetched"]),
     ...State_records(["clinicalRecords"]),
     dataFetched() {
-      return this.eventsFetched && this.doctorsFetched;
+      return this.eventsFetched && this.myDoctorsFetched;
     },
     recentRecommendations() {
       return this.clinicalRecords.sort(
