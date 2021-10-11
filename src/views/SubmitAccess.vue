@@ -37,7 +37,6 @@ export default {
   },
   created() {
     axios.get(api.submit_access + `${this.$route.params.token}`).then((res) => {
-      console.log(res);
       if (res.data.status === "ok") {
         this.addAlert({
           type: "success",

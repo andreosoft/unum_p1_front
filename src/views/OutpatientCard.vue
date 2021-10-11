@@ -225,9 +225,6 @@ export default {
       return `http://api.neomedy.com/api${api.get_file}/${id}`;
     },
   },
-  mounted() {
-    console.log(this.formattedClinicalRecords);
-  },
 };
 </script>
 

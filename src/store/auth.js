@@ -19,7 +19,6 @@ const mutations = {
 const actions = {
   login({ commit, dispatch }, { email, password }) {
     return axios.post(api.get_token, { login: email, password }).then((res) => {
-      console.log(res.data);
       if (res.data.status === "error" || res.data.data.profile.role !== 1) {
         dispatch(
           "alerts/addAlert",

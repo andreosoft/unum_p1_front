@@ -37,23 +37,7 @@ export default {
     ChatList,
     ChatWindow,
   },
-  mounted() {
-    console.group("list");
-    console.log(
-      this.$vuetify.breakpoint.smAndDown
-        ? !this.$route.meta.hideMobileList
-        : true
-    );
-    console.groupEnd();
-
-    console.group("messages");
-    console.log(
-      this.$vuetify.breakpoint.smAndDown
-        ? this.$route.meta.hideMobileList
-        : false
-    );
-    console.groupEnd();
-  },
+  mounted() {},
 };
 </script>
 
