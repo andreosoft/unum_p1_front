@@ -2,7 +2,9 @@ import axios from "./../config/axios";
 import api from "./../config/api";
 const state = {
   doctors: [],
+  myDoctors: [],
   doctorsFetched: false,
+  myDoctorsFetched: false,
   selectedDoctor: null,
   selectedDoctorFetched: false,
   doctorSchedule: {},
@@ -49,6 +51,12 @@ const mutations = {
   SET_DOCTORS(state, doctors) {
     state.doctors = doctors;
   },
+  SET_MY_DOCTORS(state, myDoctors) {
+    state.myDoctors = myDoctors;
+  },
+  SET_MY_DOCTORS_FETCHED(state, value) {
+    state.myDoctorsFetched = value;
+  },
   SET_DOCTORS_FETCHED(state, value) {
     state.doctorsFetched = value;
   },
@@ -68,6 +76,12 @@ const actions = {
       commit("SET_DOCTORS", res.data.data);
       commit("SET_DOCTORS_FETCHED", true);
       return res;
+    });
+  },
+  fetchMyDoctors({ commit }) {
+    return axios.get(api.my_doctors).then((res) => {
+      commit("SET_MY_DOCTORS", res.data.data);
+      commit("SET_MY_DOCTORS_FETCHED", true);
     });
   },
   fetchDoctorById({ commit, dispatch }, id) {
