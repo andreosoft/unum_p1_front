@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import axios from "./../config/axios";
 import api from "./../config/api";
 
@@ -10,6 +11,11 @@ const state = {
 const getters = {
   getEvents(state) {
     return state.events;
+  },
+  getValidEvents(state) {
+    return state.events.filter(
+      (event) => dayjs().isBefore(event.start) && event.type_id === 1
+    );
   },
 };
 
