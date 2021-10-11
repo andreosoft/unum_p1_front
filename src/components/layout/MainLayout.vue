@@ -26,17 +26,19 @@
       width="260"
     >
       <v-list class="d-flex pa-4">
-        <v-list-item-avatar color="rgb(80, 49, 101)">
-          <v-icon>mdi-account</v-icon>
-        </v-list-item-avatar>
-        <v-list-item-content>
-          <v-list-item-title>
-            {{ userProfile && userProfile.name }}
-          </v-list-item-title>
-          <v-list-item-subtitle>
-            {{ userProfile && userProfile.login }}
-          </v-list-item-subtitle>
-        </v-list-item-content>
+        <v-list-item class="pa-0 rounded-lg" link :to="{ name: 'Profile' }">
+          <v-list-item-avatar color="rgb(80, 49, 101)">
+            <v-icon>mdi-account</v-icon>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ userName }}
+            </v-list-item-title>
+            <v-list-item-subtitle>
+              {{ userEmail }}
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
 
       <v-divider></v-divider>
@@ -105,6 +107,8 @@ export default {
           icon: "mdi-account-group",
         },
       ],
+      userName: "",
+      userEmail: "",
     };
   },
   computed: {
@@ -122,6 +126,18 @@ export default {
     this.fetchMyDoctors();
     this.fetchClinicalRecords();
   },
+  watch: {
+    userProfile: {
+      immediate: true,
+      handler(val) {
+        if (val) {
+          this.userName = val.name;
+          this.userEmail = val.email;
+        }
+      },
+    },
+  },
+  mounted() {},
 };
 </script>
 
