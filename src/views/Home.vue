@@ -3,9 +3,9 @@
     <Loader v-if="!dataFetched" />
     <div v-else class="pb-5 pt-2">
       <div class="px-5 events">
-        <div v-if="events.length">
+        <div v-if="getValidEvents.length">
           <h2 class="mb-3">Записи к врачам</h2>
-          <EventCardList :events="events" />
+          <EventCardList :events="getValidEvents" />
         </div>
         <div v-else>
           <h2>У вас нет сделанных записей</h2>
@@ -41,7 +41,7 @@ import { createNamespacedHelpers } from "vuex";
 import DoctorCardList from "../components/DoctorCardList.vue";
 import EventCardList from "../components/EventCardList.vue";
 import Loader from "../components/Loader";
-const { mapState } = createNamespacedHelpers("events");
+const { mapState, mapGetters } = createNamespacedHelpers("events");
 const { mapState: State_records } = createNamespacedHelpers("clinicalRecords");
 const { mapState: State_doctors } = createNamespacedHelpers("doctors");
 export default {
@@ -49,6 +49,7 @@ export default {
   components: { DoctorCardList, EventCardList, Loader },
   computed: {
     ...mapState(["events", "eventsFetched"]),
+    ...mapGetters(["getValidEvents"]),
     ...State_doctors(["myDoctors", "myDoctorsFetched"]),
     ...State_records(["clinicalRecords"]),
     dataFetched() {
