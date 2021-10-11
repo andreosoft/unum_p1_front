@@ -93,6 +93,15 @@ const routes = [
         },
       },
       {
+        path: "profile",
+        name: "Profile",
+        component: () => import("./../views/Profile.vue"),
+        meta: {
+          requiresAuth: true,
+          title: "Мой профиль",
+        },
+      },
+      {
         path: "submit-access/:token",
         name: "Submit access",
         component: () => import("./../views/SubmitAccess.vue"),
