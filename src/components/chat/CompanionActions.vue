@@ -5,16 +5,18 @@
     class="pa-3"
   >
     <div class="d-flex">
-      <div>
+      <div class="pt-3">
         <v-icon size="20">mdi-format-list-bulleted</v-icon>
       </div>
       <v-list class="pa-0">
-        <v-list-item v-for="(item, index) in actions" :key="index">
-          <v-list-item-title
-            :style="`color: ${item.color && item.color}`"
-            class="align-self-start"
-            >{{ item.title }}</v-list-item-title
-          >
+        <v-list-item
+          v-for="(item, index) in actions"
+          :key="index"
+          @click="item.action"
+        >
+          <v-list-item-title :style="`color: ${item.color && item.color}`">
+            {{ item.title }}
+          </v-list-item-title>
         </v-list-item>
       </v-list>
     </div>
@@ -27,24 +29,34 @@ export default {
   data() {
     return {
       actions: [
-        {
-          title: "Поделиться контактом",
-        },
-        {
-          title: "Изменить контакт",
-        },
+        // {
+        //   title: "Поделиться контактом",
+        // },
+        // {
+        //   title: "Изменить контакт",
+        // },
         {
           title: "Удалить контакт",
+          action: this.removeChat,
         },
         {
           title: "Очистить историю",
+          action: this.clearHistory,
         },
-        {
-          title: "Заблокировать",
-          color: "#FF3636",
-        },
+        // {
+        //   title: "Заблокировать",
+        //   color: "#FF3636",
+        // },
       ],
     };
+  },
+  methods: {
+    removeChat() {
+      this.$emit("removeChat");
+    },
+    clearHistory() {
+      this.$emit("clearHistory");
+    },
   },
 };
 </script>

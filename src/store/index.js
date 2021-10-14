@@ -5,6 +5,7 @@ import alerts from "./alerts";
 import events from "./events";
 import doctors from "./doctors";
 import clinicalRecords from "./clinicalRecords";
+import chats from "./chats";
 import debounce from "lodash/debounce";
 
 const updateDoctorProfileOn = [
@@ -24,6 +25,7 @@ const store = new Vuex.Store({
     events,
     clinicalRecords,
     alerts,
+    chats,
   },
 });
 const autosaveProgram = debounce(

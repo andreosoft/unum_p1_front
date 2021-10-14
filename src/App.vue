@@ -76,16 +76,37 @@ export default {
 }
 </style>
 <style lang="scss">
-.position-relative {
-  position: relative !important;
-}
-.position-absolute {
-  position: absolute !important;
+.justify-content-between {
+  justify-content: space-between;
 }
 .justify-content-center {
   justify-content: center;
 }
 .align-items-center {
   align-items: center;
+}
+.align-items-start {
+  align-items: start !important;
+}
+.align-items-end {
+  align-items: flex-end !important;
+}
+.align-self-center {
+  align-items: center !important;
+}
+.align-self-start {
+  align-self: start !important;
+}
+.align-self-end {
+  align-self: flex-end;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.position-relative {
+  position: relative;
+}
+.position-absolute {
+  position: absolute !important;
 }
 </style>

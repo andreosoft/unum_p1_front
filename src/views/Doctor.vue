@@ -18,7 +18,11 @@
             >
             </v-img>
           </v-avatar>
-          <ContactButtons :email="getEmail" :phone="getPhone" />
+          <ContactButtons
+            :email="getEmail"
+            :phone="getPhone"
+            @createChat="createChat"
+          />
           <div class="doctor-info__text-wrap">
             <p class="doctor-info__text mb-1">
               {{ getSecondName }}
@@ -228,6 +232,7 @@ const {
   mapActions: Actions_events,
   mapState: State_events,
 } = createNamespacedHelpers("events");
+const { mapActions: Actions_chats } = createNamespacedHelpers("chats");
 export default {
   mixins: [filters],
   name: "Doctor",
@@ -295,10 +300,14 @@ export default {
     getPhone() {
       return this.selectedDoctor && this.selectedDoctor.phone;
     },
+    getUserId() {
+      return this.selectedDoctor && this.selectedDoctor.user_id;
+    },
   },
   methods: {
     ...Actions_doctors(["fetchDoctorById", "fetchDoctorSchedule"]),
     ...Actions_events(["addEvent", "deleteEvent"]),
+    ...Actions_chats(["createNewChat"]),
     async setEvent() {
       const event = {
         start: this.date + " " + this.start,
@@ -328,6 +337,21 @@ export default {
         eventId: this.eventIdToDelete,
         doctorId: this.$route.params.id,
       });
+    },
+    createChat() {
+      this.createNewChat(String(this.getUserId));
+      console.log(
+        "создаю чат и перенаправляю на роут этого чата",
+        String(this.getUserId)
+      );
+    },
+  },
+  watch: {
+    getUserId: {
+      immediate: true,
+      handler(val) {
+        console.log(val);
+      },
     },
   },
   async created() {

@@ -76,8 +76,6 @@
             v-model="getSetLanguage"
             :items="languages"
             class="mb-3"
-            messages="нужно чтобы бэк сохранял это значение и возвращал его остальное уже готово"
-            disabled
           ></v-select>
           <v-autocomplete
             ref="country"
@@ -86,8 +84,6 @@
             label="Страна"
             dense
             outlined
-            messages="нужно чтобы бэк сохранял это значение и возвращал его остальное уже готово"
-            disabled
           ></v-autocomplete>
         </v-col>
       </v-row>

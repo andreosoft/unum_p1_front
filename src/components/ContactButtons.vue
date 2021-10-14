@@ -1,34 +1,35 @@
 <template>
-  <div class="d-flex patient-actions__list">
-    <v-responsive
-      style="overflow: unset; position: relative"
-      v-for="(item, index) in patientActions"
-      :key="item.id"
-      :aspect-ratio="2 / 1"
-      :class="{ 'mr-1': index !== patientActions.length - 1 }"
-    >
-      <v-tooltip bottom>
-        <template #activator="{ on, attrs }">
-          <a
-            class="rounded patient-actions__item"
-            :href="item.href"
-            v-on="on"
-            v-bind="attrs"
+  <div class="patient-actions__list">
+    <v-tooltip bottom v-for="item in patientActions" :key="item.id">
+      <template #activator="{ on, attrs }">
+        <a
+          v-if="item.href"
+          class="rounded patient-actions__item"
+          :href="item.href"
+          v-on="on"
+          v-bind="attrs"
+        >
+          <v-icon size="17" v-text="item.icon" color="white"> </v-icon>
+        </a>
+        <button
+          v-else
+          class="rounded patient-actions__item w-100"
+          v-on="on"
+          v-bind="attrs"
+          @click="item.action"
+        >
+          <v-badge
+            v-if="item.notifications"
+            :content="item.notifications"
+            color="red"
           >
-            <v-icon size="17" v-text="item.icon" color="white"> </v-icon>
-          </a>
-          <div v-show="false" class="patient-notifications">
-            <!-- notifications count -->
-            <!-- :class="[
-            notif.length < 2
-              ? 'rounded-circle width-15'
-              : 'rounded-pill width-content px-1',
-          ]" -->
-          </div>
-        </template>
-        <span>{{ item.tooltip }}</span>
-      </v-tooltip>
-    </v-responsive>
+            <v-icon size="17" v-text="'mdi-chat'" color="white"> </v-icon>
+          </v-badge>
+          <v-icon v-else size="17" v-text="'mdi-chat'" color="white"> </v-icon>
+        </button>
+      </template>
+      <span>{{ item.tooltip }}</span>
+    </v-tooltip>
   </div>
 </template>
 
@@ -60,14 +61,31 @@ export default {
           id: 2,
           tooltip: this.email,
         },
+        {
+          icon: "mdi-chat",
+          action: this.createChat,
+          id: 3,
+          tooltip: "Написать сообщение",
+          notifications: 0,
+        },
       ];
       return actions;
+    },
+  },
+  methods: {
+    createChat() {
+      this.$emit("createChat");
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.patient-actions__list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 5px;
+}
 .patient-actions__item {
   display: flex;
   justify-content: center;

@@ -4,7 +4,7 @@
     style="width: 48px; height: 48px;"
     :style="`background-color: ${action.bgColor && action.bgColor};`"
   >
-    <v-icon :color="action.color && action.color">{{
+    <v-icon :color="action.color && action.color" @click="$emit('action')">{{
       action.icon && action.icon
     }}</v-icon>
   </div>

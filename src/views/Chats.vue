@@ -1,11 +1,15 @@
 <template>
-  <v-container fluid style="height: 100%;" class="pa-0">
-    <v-row style="height: 100%; flex-wrap: nowrap" no-gutters class="d-flex">
+  <v-container fluid class="pa-0" style="height: 100%;">
+    <v-row
+      style="height: 100%; flex-wrap: nowrap;"
+      :class="{ desktop: $vuetify.breakpoint.mdAndUp }"
+      no-gutters
+      class="d-flex"
+    >
       <v-col
         class="list"
         cols="12"
         md="4"
-        style="border-right: 1px solid #EDECEF;"
         v-if="
           $vuetify.breakpoint.smAndDown ? !$route.meta.hideMobileList : true
         "
@@ -37,13 +41,18 @@ export default {
     ChatList,
     ChatWindow,
   },
-  mounted() {},
 };
 </script>
 
 <style lang="scss" scoped>
 @import "~vuetify/src/styles/settings/_variables";
-
+.list {
+  border-right: 1px solid #edecef;
+  overflow-y: scroll;
+}
+.desktop {
+  max-height: calc(100vh - 60px);
+}
 .slide-fade-enter-active,
 .slide-fade-leave-active {
   transition: all 0.1s ease;

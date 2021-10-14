@@ -3,25 +3,14 @@
     class="cursor-pointer position-relative pa-0 d-flex align-items-center chat-item"
     :class="{ active: active }"
   >
-    <UserAvatarAndName>
+    <UserAvatarAndName :name="name" :group="group" :avatarUrl="avatarUrl">
       <template #subtitle>
-        <v-list-item-subtitle
+        <!-- <v-list-item-subtitle
           class="grey--text text-truncate"
           :class="[active ? 'text--lighten-3' : 'text--darken-1']"
         >
           текст последнего сообщенияывфывфывфы
-        </v-list-item-subtitle>
-      </template>
-      <template #badge>
-        <div v-if="notifications" class="notifications">
-          <v-chip
-            class="rounded-xl pa-2"
-            small
-            :color="active ? 'white' : ''"
-            :light="active"
-            >{{ notifications }}</v-chip
-          >
-        </div>
+        </v-list-item-subtitle> -->
       </template>
     </UserAvatarAndName>
   </div>
@@ -43,10 +32,17 @@ export default {
       type: Number,
       default: 0,
     },
-  },
-  methods: {
-    chooseConversation() {
-      console.log("choosen");
+    name: {
+      type: String,
+      default: "",
+    },
+    avatarUrl: {
+      type: String,
+      default: "",
+    },
+    group: {
+      type: Boolean,
+      default: false,
     },
   },
 };

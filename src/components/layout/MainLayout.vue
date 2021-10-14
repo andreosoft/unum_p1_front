@@ -73,6 +73,7 @@ import { createNamespacedHelpers } from "vuex";
 const { mapActions, mapState } = createNamespacedHelpers("auth");
 const { mapActions: Action_doctors } = createNamespacedHelpers("doctors");
 const { mapActions: Action_events } = createNamespacedHelpers("events");
+const { mapActions: Action_chats } = createNamespacedHelpers("chats");
 const { mapActions: Acition_clinicalRecords } = createNamespacedHelpers(
   "clinicalRecords"
 );
@@ -119,12 +120,14 @@ export default {
     ...Action_doctors(["fetchDoctors", "fetchMyDoctors"]),
     ...Action_events(["fetchEvents"]),
     ...Acition_clinicalRecords(["fetchClinicalRecords"]),
+    ...Action_chats(["fetchChats"]),
   },
   created() {
     this.fetchEvents();
     this.fetchDoctors();
     this.fetchMyDoctors();
     this.fetchClinicalRecords();
+    this.fetchChats();
   },
   watch: {
     userProfile: {

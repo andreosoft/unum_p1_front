@@ -9,15 +9,29 @@
         <v-icon size="20">mdi-alert-circle-outline</v-icon>
       </div>
       <v-list class="py-0">
-        <v-list-item
-          v-for="(item, index) in companionDialogMockup"
-          :key="index"
-          class="flex-column align-items-start"
-        >
-          <v-list-item-title class="align-self-start">{{
-            item.title
-          }}</v-list-item-title>
-          <v-list-item-subtitle>{{ item.sub }}</v-list-item-subtitle>
+        <v-list-item class="flex-column align-items-start">
+          <v-list-item-title class="align-self-start">
+            {{ specialty }}
+          </v-list-item-title>
+          <v-list-item-subtitle>Должность</v-list-item-subtitle>
+        </v-list-item>
+        <v-list-item class="flex-column align-items-start">
+          <v-list-item-title class="align-self-start">
+            {{ country }}
+          </v-list-item-title>
+          <v-list-item-subtitle>Страна</v-list-item-subtitle>
+        </v-list-item>
+        <v-list-item class="flex-column align-items-start">
+          <v-list-item-title class="align-self-start">
+            {{ lang }}
+          </v-list-item-title>
+          <v-list-item-subtitle>Язык</v-list-item-subtitle>
+        </v-list-item>
+        <v-list-item class="flex-column align-items-start">
+          <v-list-item-title class="align-self-start">
+            {{ uni }}
+          </v-list-item-title>
+          <v-list-item-subtitle>Образование</v-list-item-subtitle>
         </v-list-item>
       </v-list>
     </div>
@@ -27,27 +41,23 @@
 <script>
 export default {
   name: "CompanionEducation",
-  data() {
-    return {
-      companionDialogMockup: [
-        {
-          title: "Стоматолог",
-          sub: "Должность",
-        },
-        {
-          title: "Россия",
-          sub: "Страна",
-        },
-        {
-          title: "русский",
-          sub: "Язык",
-        },
-        {
-          title: "Кыргызская Государственная Медицинская Академия",
-          sub: "Образование",
-        },
-      ],
-    };
+  props: {
+    specialty: {
+      type: String,
+      default: "",
+    },
+    country: {
+      type: String,
+      default: "",
+    },
+    lang: {
+      type: String,
+      default: "",
+    },
+    uni: {
+      type: String,
+      default: "",
+    },
   },
 };
 </script>

@@ -7,28 +7,33 @@
     <div class="d-flex justify-content-between">
       <v-card-title>Информация</v-card-title>
       <v-card-actions>
-        <v-icon class="mr-4">mdi-phone</v-icon>
+        <!-- <v-icon v-if="showPhone" class="mr-4">mdi-phone</v-icon> -->
         <v-icon @click="$emit('close')">mdi-close</v-icon>
       </v-card-actions>
     </div>
     <v-list-item class="pa-0">
-      <UserAvatarAndName :avatarSize="65" :online="online" disabled>
-        <template #subtitle>
-          <v-list-item-subtitle :class="[online ? 'online' : 'offline']">
-            {{ online ? "Online" : "Offline" }}
-          </v-list-item-subtitle>
-        </template>
-      </UserAvatarAndName>
+      <UserAvatarAndName
+        :avatarSize="65"
+        disabled
+        :name="getChatTitle"
+        :avatarUrl="getChatAvatar"
+        @click="$emit('click')"
+        :consilium="selectedChat && selectedChat.type === 3"
+        :group="selectedChat && selectedChat.type === 2"
+      />
     </v-list-item>
   </v-card>
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapState } = createNamespacedHelpers("chats");
+const { mapGetters: Getters_doctors } = createNamespacedHelpers("doctors");
 import UserAvatarAndName from "./UserAvatarAndName";
 export default {
   name: "CompanionInfo",
   props: {
-    online: {
+    showPhone: {
       type: Boolean,
       default: false,
     },
@@ -36,19 +41,31 @@ export default {
   components: {
     UserAvatarAndName,
   },
+  computed: {
+    ...mapState(["selectedChat"]),
+    ...Getters_doctors(["imageSrc"]),
+    getChatTitle() {
+      return (
+        (this.selectedChat &&
+          this.selectedChat.type === 1 &&
+          this.selectedChat.user_name) ||
+        (this.selectedChat &&
+          this.selectedChat.type !== 1 &&
+          this.selectedChat.name) ||
+        "Unknown contact"
+      );
+    },
+    getChatAvatar() {
+      return (
+        (this.selectedChat &&
+          this.selectedChat.type === 1 &&
+          this.selectedChat.user_image &&
+          `${this.imageSrc(
+            this.selectedChat.user_image
+          )}?width=100&height=100`) ||
+        "/images/patient-placeholder.jpeg"
+      );
+    },
+  },
 };
 </script>
-
-<style lang="scss" scoped>
-.online {
-  &:before {
-    content: "●";
-    color: #35d11b;
-  }
-}
-.offline {
-  &:before {
-    content: "●";
-  }
-}
-</style>

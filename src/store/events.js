@@ -50,6 +50,7 @@ const actions = {
         },
         { root: true }
       );
+      dispatch("doctors/fetchMyDoctors");
     });
   },
   fetchEvents({ commit }) {
