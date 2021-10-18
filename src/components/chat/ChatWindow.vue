@@ -213,8 +213,7 @@ export default {
   },
   async mounted() {
     await this.fetchCurrentUserMessages(this.$route.params.id);
-    // this.scrollDown();
-    console.log(this.selectedChat);
+    this.scrollDown();
   },
 };
 </script>
