@@ -183,11 +183,19 @@ export default {
           attachments.push({ type: "file", value: fileId, name: file.name });
         }
       }
-      const payload = {
+      const params = {
+        chat_id: this.$route.params.id,
         message,
         attachments: JSON.stringify(attachments),
       };
-      this.postMessage({ message: payload, chat_id: this.$route.params.id });
+      this.$root.ws.send(
+        JSON.stringify({
+          e: "send_message",
+          params,
+        })
+      );
+      await this.fetchCurrentUserMessages(params.chat_id);
+      this.scrollDown();
     },
     attachFile(e) {
       console.log(e);
@@ -203,12 +211,9 @@ export default {
 
     removeChat() {
       this.deleteChat(this.getChatId);
-      console.log("action remove");
-      this.$router.push({ name: "Chats" });
     },
     clearHistory() {
       this.clearChatHistory(this.getChatId);
-      console.log("action clear");
     },
   },
   async mounted() {
