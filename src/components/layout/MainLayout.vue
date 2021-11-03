@@ -50,10 +50,13 @@
           link
           :to="{ name: link.name }"
         >
-          <v-list-item-icon>
+          <v-list-item-icon class="ml-0">
             <v-icon>{{ link.icon }}</v-icon>
           </v-list-item-icon>
-          <v-list-item-title>{{ link.title }}</v-list-item-title>
+          <v-badge v-if="link.notification">
+            <v-list-item-title>{{ link.title }}</v-list-item-title>
+          </v-badge>
+          <v-list-item-title v-else>{{ link.title }}</v-list-item-title>
         </v-list-item>
         <v-list-item>
           <v-list-item-action>
@@ -81,7 +84,14 @@ export default {
   data() {
     return {
       drawer: true,
-      navLinks: [
+      userName: "",
+      userEmail: "",
+    };
+  },
+  computed: {
+    ...mapState(["userProfile"]),
+    navLinks() {
+      return [
         {
           name: "Home",
           title: "Главная",
@@ -96,6 +106,7 @@ export default {
           name: "Chats",
           title: "Чаты",
           icon: "mdi-message-text",
+          notification: this.$root.chatsNotification
         },
         {
           name: "My Doctors",
@@ -107,13 +118,8 @@ export default {
           title: "Все врачи",
           icon: "mdi-account-group",
         },
-      ],
-      userName: "",
-      userEmail: "",
-    };
-  },
-  computed: {
-    ...mapState(["userProfile"]),
+      ]
+    }
   },
   methods: {
     ...mapActions(["logout"]),
