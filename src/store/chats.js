@@ -29,6 +29,9 @@ const mutations = {
     });
     state.chats = chats;
   },
+  ADD_MESSAGE(state, payload) {
+    state.messages.push(payload);
+  },
   SET_MESSAGES(state, messages) {
     messages.sort((a, b) => (a.createdon > b.createdon ? 1 : -1));
     messages.map((message) => {
@@ -66,6 +69,11 @@ const actions = {
       dispatch("fetchCurrentUserMessages", chat_id);
     });
   },
+
+  addMessage({ commit }, message) {
+    commit("ADD_MESSAGE", message);
+  },
+
   fetchChats({ commit }) {
     return axios.get(api.getUserChats).then((res) => {
       commit("SET_CHATS", res.data.data);
@@ -73,7 +81,6 @@ const actions = {
     });
   },
   createNewChat({ dispatch }, id) {
-    console.log({ to_id: String(id) });
     return axios.post(api.createNewChat, { to_id: String(id) }).then((res) => {
       const chat_id = res.data.data.chat_id;
       dispatch("fetchChats");
@@ -133,16 +140,14 @@ const actions = {
       });
   },
 
-  deleteChat({ dispatch }, chatId) {
-    console.log(chatId);
-    return axios.delete(api.delete_chat + `/${chatId}`).then(async () => {
-      await dispatch("fetchChats");
+  deleteChat({ dispatch }, chat_id) {
+    return axios.delete(api.delete_chat + `/${chat_id}`).then(async () => {
+      // await dispatch("fetchChats");
       router.push({ name: "Chats" });
     });
   },
   clearChatHistory({ dispatch }, chatId) {
     return axios.delete(api.clear_chat_history + `/${chatId}`).then(() => {
-      console.log("chat history cleared");
       dispatch("fetchCurrentUserMessages", chatId);
     });
   },
