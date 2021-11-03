@@ -211,11 +211,6 @@ export default {
       return JSON.parse(val).diagnos;
     },
   },
-  watch: {
-    selectedAppointment(val) {
-      console.log(val);
-    },
-  },
   methods: {
     showAppointmentDialog(event) {
       this.appointmentDetailsDialog = true;

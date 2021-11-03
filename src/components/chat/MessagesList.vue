@@ -66,15 +66,6 @@ export default {
       return this.selectedChat && this.selectedChat.user_image;
     },
   },
-  watch: {
-    currentUserId: {
-      immediate: true,
-      handler(val) {
-        console.log(val);
-        console.log(this.getSelectedChatImageId);
-      },
-    },
-  },
 };
 </script>
 

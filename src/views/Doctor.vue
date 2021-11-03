@@ -340,26 +340,11 @@ export default {
     },
     createChat() {
       this.createNewChat(String(this.getUserId));
-      console.log(
-        "создаю чат и перенаправляю на роут этого чата",
-        String(this.getUserId)
-      );
-    },
-  },
-  watch: {
-    getUserId: {
-      immediate: true,
-      handler(val) {
-        console.log(val);
-      },
     },
   },
   async created() {
     this.fetchDoctorById(this.$route.params.id);
     this.fetchDoctorSchedule(this.$route.params.id);
-  },
-  mounted() {
-    console.log(this.selectedDoctor);
   },
 };
 </script>

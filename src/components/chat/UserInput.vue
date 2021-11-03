@@ -74,14 +74,8 @@ export default {
       previewUrl: "",
     };
   },
-  watch: {
-    previewUrl(val) {
-      console.log(val);
-    },
-  },
   methods: {
     async onChange(e) {
-      console.log(e);
       this.file = e;
       this.previewUrl = URL.createObjectURL(e);
     },

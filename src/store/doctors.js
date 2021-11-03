@@ -78,7 +78,6 @@ const actions = {
     return axios.get(api.all_doctors).then((res) => {
       commit("SET_DOCTORS", res.data.data);
       commit("SET_DOCTORS_FETCHED", true);
-      console.log(res.data.data);
       return res;
     });
   },

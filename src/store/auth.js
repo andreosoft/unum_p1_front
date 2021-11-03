@@ -29,7 +29,6 @@ const mutations = {
   },
   SET_USER_PROFILE_LANG(state, lang) {
     state.userProfile.lang = lang;
-    console.log(lang, state.userProfile.lang);
   },
   SET_USER_PROFILE_COUNTRY(state, country) {
     state.userProfile.country = country;
