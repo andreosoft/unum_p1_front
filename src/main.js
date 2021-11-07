@@ -4,6 +4,8 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import Vuelidate from 'vuelidate'
+import { messaging, getToken } from './firebase'
+
 import VuePhoneNumberInput from 'vue-phone-number-input';
 import 'vue-phone-number-input/dist/vue-phone-number-input.css';
 import './registerServiceWorker'
@@ -51,15 +53,29 @@ new Vue({
         this.ws.onopen = () => {
           console.log('socket connected')
           this.ws.send(JSON.stringify({ e: "auth", d: usertoken }));
-          this.ws.send(
-            JSON.stringify({
-              e: "register_firebase",
-              params: {
-                token:
-                  "BLPcjvIYgCpYwdhZe-b9toT-BvwulE48yPwF2IbzEh0PzPoX3pU_KAurTKA76XOqtdrXP3eJAxssbgRH-Fgv9Vc",
-              },
-            })
-          );
+          getToken(messaging, { vapidKey: "BLPcjvIYgCpYwdhZe-b9toT-BvwulE48yPwF2IbzEh0PzPoX3pU_KAurTKA76XOqtdrXP3eJAxssbgRH-Fgv9Vc" }).then((currentToken) => {
+            if (currentToken) {
+                console.log('currentToken ', currentToken);
+                this.ws.send(
+                  JSON.stringify({
+                    e: "register_firebase",
+                    params: {
+                      token: currentToken,
+                    },
+                  })
+                );
+                // window.localStorage.setItem('FCM token', currentToken)
+                // Send the token to your server and update the UI if necessary
+                // ...
+            } else {
+                // Show permission request UI
+                console.log('No registration token available. Request permission to generate one.');
+                // ...
+            }
+          }).catch((err) => {
+              console.log('An error occurred while retrieving token. ', err);
+              // ...
+          });
           timer = setInterval(() => {
             let d = { e: "h" };
             this.ws.send(JSON.stringify(d));
