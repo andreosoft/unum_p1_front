@@ -15,6 +15,8 @@ const api = {
   get_photo: "http://api.neomedy.com/api/image/download",
   submit_access: "patient/submit-access/", // /:token
   get_file: "file/download",
+  postFile: 'file/upload',
+  postImage: 'image/upload',
 
   createNewChat: "messegner/new_private_chat", // { to_id: '123'}
   getUserChats: "messegner/chats",

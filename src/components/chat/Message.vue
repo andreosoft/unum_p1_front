@@ -128,7 +128,7 @@ export default {
   },
   methods: {
     download(id) {
-      return `http://api.neomedy.com${api.getFile}/${id}`;
+      return `https://api.neomedy.com/api/${api.get_file}/${id}`;
     },
   },
 };
