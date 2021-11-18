@@ -21,13 +21,14 @@
         <CompanionInfo
           @close="companionDialog = false"
           :showPhone="selectedChat && selectedChat.type === 1"
+          @click="$router.push({ name: 'Doctor' , params: { slug: 'my-doctors', id: getDoctorByUserId(getCompanionID).id } })"
         />
         <CompanionEducation
           v-if="selectedChat && selectedChat.type === 1"
-          specialty="специальность врача"
-          country="страна врача"
-          lang="язык врача"
-          uni="универститет врача"
+          :specialty="this.getDoctorByUserId(this.getCompanionID).info.doctor_specialty"
+          :lang="this.getDoctorByUserId(this.getCompanionID).info.serviceLanguages.join(', ')"
+          :uni="this.getDoctorByUserId(this.getCompanionID).medical_university"
+          :country="this.getDoctorByUserId(this.getCompanionID).country"
         />
 
         <CompanionMedia
@@ -50,6 +51,7 @@ import { createNamespacedHelpers } from "vuex";
 import dayjs from "dayjs";
 const { mapState, mapActions } = createNamespacedHelpers("chats");
 const { mapState: State_auth } = createNamespacedHelpers("auth");
+const { mapGetters: State_doctors } = createNamespacedHelpers("doctors");
 const { mapActions: Actions_alerts } = createNamespacedHelpers("alerts");
 import ChatWindowToolbar from "./ChatWindowToolbar";
 import MessagesList from "./MessagesList";
@@ -79,6 +81,7 @@ export default {
   computed: {
     ...mapState(["messages", "messagesFetched", "selectedChat"]),
     ...State_auth(["userProfile"]),
+    ...State_doctors(['getDoctorByUserId']),
     formattedMessages() {
       const messages = [...this.messages];
       const result = messages.reduce((prev, item, index, arr) => {
@@ -147,6 +150,10 @@ export default {
     },
     getChatId() {
       return this.selectedChat && this.selectedChat.id;
+    },
+    getCompanionID() {
+      const notMe = this.selectedChat?.participants.find(i => i.user_id !== this.userProfile.user_id)
+      return notMe.user_id
     },
   },
   methods: {
