@@ -14,7 +14,6 @@
     <v-list-item class="pa-0">
       <UserAvatarAndName
         :avatarSize="65"
-        disabled
         :name="getChatTitle"
         :avatarUrl="getChatAvatar"
         @click="$emit('click')"

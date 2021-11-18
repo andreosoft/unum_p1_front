@@ -110,9 +110,6 @@ export default {
       console.log("search");
     },
   },
-  mounted() {
-    console.log(this.getChatTitle);
-  },
 };
 </script>
 

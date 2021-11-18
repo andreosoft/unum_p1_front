@@ -15,7 +15,7 @@
       {{ doctor.name }}
     </v-card-text>
     <v-card-text>
-      <span v-if="JSON.parse(doctor.info).doctor_specialty">{{
+      <span v-if="doctor.info.doctor_specialty">{{
         getDoctorSpecialty(doctor.id)
       }}</span>
       <span v-else class="grey--text text--lighten-1">No specialty</span>
