@@ -120,7 +120,7 @@ const actions = {
       }
     });
   },
-  updateDoctorProfile({ state, commit, dispatch }) {
+  updateProfile({ state, commit, dispatch }) {
     console.log("saving...");
     commit("SET_PROFILE_UPDATING_STATE", true);
     return axios.post(api.update_profile, state.userProfile).then(() => {

@@ -8,7 +8,7 @@ import clinicalRecords from "./clinicalRecords";
 import chats from "./chats";
 import debounce from "lodash/debounce";
 
-const updateDoctorProfileOn = [
+const updateProfileOn = [
   "SET_USER_PROFILE_NAME",
   "SET_USER_PROFILE_BIRTHDAY",
   "SET_USER_PROFILE_PHONES",
@@ -29,13 +29,13 @@ const store = new Vuex.Store({
   },
 });
 const autosaveProgram = debounce(
-  () => store.dispatch("auth/updateDoctorProfile"),
+  () => store.dispatch("auth/updateProfile"),
   1000,
   { maxWait: 4000 }
 );
 
 store.subscribe((mutation) => {
-  if (updateDoctorProfileOn.indexOf(mutation.type.split("/")[1]) > -1) {
+  if (updateProfileOn.indexOf(mutation.type.split("/")[1]) > -1) {
     autosaveProgram();
   }
 });
