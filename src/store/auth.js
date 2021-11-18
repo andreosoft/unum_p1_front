@@ -24,6 +24,9 @@ const mutations = {
   SET_USER_PROFILE_PHONES(state, phone) {
     state.userProfile.phones = phone;
   },
+  SET_USER_PROFILE_PHOTO(state, photo) {
+    state.userProfile.photo = photo;
+  },
   SET_USER_PROFILE_EMAIL(state, email) {
     state.userProfile.email = email;
   },
@@ -129,6 +132,14 @@ const actions = {
       console.log("saved");
     });
   },
+  uploadUserImage({commit}) {
+    const formData = new FormData();
+    formData.append("file", file);
+    return axios.post(api.postImage, formData).then((res) => {
+      console.log(res)
+      commit('SET_USER_PROFILE_PHOTO', res.data.data.file)
+    });
+  }
 };
 
 export default {
