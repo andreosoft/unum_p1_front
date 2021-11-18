@@ -32,6 +32,7 @@
 <script>
 import { createNamespacedHelpers } from "vuex";
 const { mapState } = createNamespacedHelpers("chats");
+const { mapState: State_auth } = createNamespacedHelpers("auth");
 const { mapGetters: Getters_doctors } = createNamespacedHelpers("doctors");
 import UserAvatarAndName from "./UserAvatarAndName";
 import ChatWindowToolbarActions from "./ChatWindowToolbarActions";
@@ -72,27 +73,36 @@ export default {
   computed: {
     ...mapState(["selectedChat"]),
     ...Getters_doctors(["imageSrc"]),
+    ...State_auth(['userProfile']),
     getChatTitle() {
-      return (
-        (this.selectedChat &&
-          this.selectedChat.type === 1 &&
-          this.selectedChat.user_name) ||
-        (this.selectedChat &&
-          this.selectedChat.type !== 1 &&
-          this.selectedChat.name) ||
-        "Unknown contact"
-      );
+      if (this.selectedChat?.type !== 1) {
+        return this.selectedChat?.name;
+      }
+      for (let i = 0; i < this.selectedChat?.participants.length; i++) {
+        if (this.selectedChat.participants[i].user_id !== this.userProfile.user_id) {
+          if (!this.selectedChat.participants[i].user_name) {
+            return "имя не указано";
+          }
+          return this.selectedChat.participants[i].user_name;
+        }
+      }
     },
     getChatAvatar() {
-      return (
-        (this.selectedChat &&
-          this.selectedChat.type === 1 &&
-          this.selectedChat.user_image &&
-          `${this.imageSrc(
-            this.selectedChat.user_image
-          )}?width=100&height=100`) ||
-        "/images/patient-placeholder.jpeg"
-      );
+      if (this.selectedChat?.type !== 1) {
+        return;
+      }
+      for (let i = 0; i < this.selectedChat?.participants.length; i++) {
+        if (
+          this.selectedChat?.participants[i].user_id !== this.userProfile.user_id
+        ) {
+          if (!this.selectedChat?.participants[i].user_image) {
+            return "/images/patient-placeholder.jpeg";
+          }
+          return `${this.imageSrc(
+            this.selectedChat?.participants[i].user_image
+          )}?width=100&height=100`;
+        }
+      }
     },
   },
   methods: {
