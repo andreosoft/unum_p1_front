@@ -33,7 +33,7 @@ const getters = {
     const doctor = state.doctors.find((doc) => doc.id === doctorId);
     try {
       if (!doctor) throw Error;
-      return JSON.parse(doctor.info).doctor_specialty;
+      return doctor.info.doctor_specialty;
     } catch (err) {
       return "";
     }
@@ -49,9 +49,19 @@ const getters = {
   imageSrc() {
     return (id) => api.get_photo + `/${id}`;
   },
+  getDoctorByUserId: (state) => (userId) => {
+    return state.doctors.find(doc => doc.user_id == userId)
+  }
 };
 const mutations = {
   SET_DOCTORS(state, doctors) {
+    doctors.map(doc => {
+      try {
+        doc.info = JSON.parse(doc.info)
+      } catch {
+        doc.info = {}
+      }
+    })
     state.doctors = doctors;
   },
   SET_MY_DOCTORS(state, myDoctors) {
