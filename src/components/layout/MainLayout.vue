@@ -28,7 +28,7 @@
       <v-list class="d-flex pa-4">
         <v-list-item class="pa-0 rounded-lg" link :to="{ name: 'Profile' }">
           <v-list-item-avatar color="rgb(80, 49, 101)">
-            <v-icon>mdi-account</v-icon>
+            <v-img :src="getPhotoURL(userProfile.photo)"></v-img>
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title>
@@ -74,7 +74,10 @@
 <script>
 import { createNamespacedHelpers } from "vuex";
 const { mapActions, mapState } = createNamespacedHelpers("auth");
-const { mapActions: Action_doctors } = createNamespacedHelpers("doctors");
+const {
+  mapActions: Action_doctors,
+  mapGetters: Getters_doctors,
+} = createNamespacedHelpers("doctors");
 const { mapActions: Action_events } = createNamespacedHelpers("events");
 const { mapActions: Action_chats } = createNamespacedHelpers("chats");
 const { mapActions: Acition_clinicalRecords } = createNamespacedHelpers(
@@ -90,6 +93,7 @@ export default {
   },
   computed: {
     ...mapState(["userProfile"]),
+    ...Getters_doctors(["getPhotoURL"]),
     navLinks() {
       return [
         {

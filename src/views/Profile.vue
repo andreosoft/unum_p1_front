@@ -69,10 +69,12 @@
             v-model="getSetEmail"
             class="mb-3"
           ></v-text-field>
-          <v-select
+          <v-file-input accept="image/*" @change="onPhotoChange"></v-file-input>
+          <!-- <v-select
             label="Язык"
             dense
             outlined
+            hide-details
             v-model="getSetLanguage"
             :items="languages"
             class="mb-3"
@@ -82,9 +84,10 @@
             v-model="getSetCountry"
             :items="countries"
             label="Страна"
+            hide-details
             dense
             outlined
-          ></v-autocomplete>
+          ></v-autocomplete> -->
         </v-col>
       </v-row>
     </v-container>
@@ -102,7 +105,7 @@
 <script>
 import { createNamespacedHelpers } from "vuex";
 import dayjs from "dayjs";
-const { mapState, mapMutations } = createNamespacedHelpers("auth");
+const { mapState, mapMutations, mapActions } = createNamespacedHelpers("auth");
 const { mapActions: Actions_alerts } = createNamespacedHelpers("alerts");
 export default {
   name: "Profile",
@@ -242,7 +245,11 @@ export default {
       "SET_USER_PROFILE_LANG",
       "SET_USER_PROFILE_COUNTRY",
     ]),
+    ...mapActions(["uploadUserImage"]),
     ...Actions_alerts(["addAlert"]),
+    onPhotoChange(v) {
+      this.uploadUserImage(v);
+    },
   },
 };
 </script>

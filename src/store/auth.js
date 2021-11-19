@@ -132,14 +132,13 @@ const actions = {
       console.log("saved");
     });
   },
-  uploadUserImage({commit}) {
+  uploadUserImage({ commit }, file) {
     const formData = new FormData();
     formData.append("file", file);
     return axios.post(api.postImage, formData).then((res) => {
-      console.log(res)
-      commit('SET_USER_PROFILE_PHOTO', res.data.data.file)
+      commit("SET_USER_PROFILE_PHOTO", res.data.data.file);
     });
-  }
+  },
 };
 
 export default {
