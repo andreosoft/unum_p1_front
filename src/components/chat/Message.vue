@@ -31,7 +31,7 @@
         </div>
         <!-- file -->
         <div v-if="attachments.length && attachments[0].type === 'file'">
-          <a :href="download(attachments[0].value)">
+          <a :href="download(attachments[0].value)" target="_blank">
             <div>
               <div
                 style="height: 100px; width: 100%; background-color: white;"
