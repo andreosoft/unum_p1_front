@@ -56,7 +56,24 @@
       </div>
     </div>
 
-    <!-- document preview -->
+    <div v-else-if="file && file.type.includes('audio/')" class="files files--document pa-5">
+      <div class="position-relative">
+        <span class="mr-2">Аудио загружено</span>
+        <v-icon color="grey" @click="file = null">
+          mdi-close-circle-outline
+        </v-icon>
+      </div>
+    </div>
+
+    <div v-else-if="file && file.type.includes('video/')" class="files files--document pa-5">
+      <div class="position-relative">
+        <span class="mr-2">Видео загружено</span>
+        <v-icon color="grey" @click="file = null">
+          mdi-close-circle-outline
+        </v-icon>
+      </div>
+    </div>
+    
     <div v-else-if="file" class="files files--document pa-5">
       <div class="position-relative">
         <span class="mr-2">Файл загружен</span>
