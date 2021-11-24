@@ -50,17 +50,21 @@
     <div v-if="file && file.type.includes('image/')" class="files pa-5">
       <div class="position-relative">
         <v-img class="rounded-lg preview--img" :src="previewUrl"> </v-img>
-        <v-icon color="grey" class="position-absolute" @click="file = null">
+        <v-icon color="grey" class="position-absolute" style="top: 0; left: 0;" @click="file = null">
           mdi-close-circle-outline
         </v-icon>
       </div>
     </div>
 
     <!-- document preview -->
-    <!-- code is here -->
-
-    <!-- video, audio -->
-    <!-- code is here -->
+    <div v-else-if="file" class="files files--document pa-5">
+      <div class="position-relative">
+        <span class="mr-2">Файл загружен</span>
+        <v-icon color="grey" @click="file = null">
+          mdi-close-circle-outline
+        </v-icon>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -110,6 +114,9 @@ export default {
     max-height: 100%;
     background-color: cyan;
     border: 1px solid #cecece;
+  }
+  &.files--document {
+    height: unset;
   }
 }
 </style>

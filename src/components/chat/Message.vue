@@ -30,7 +30,7 @@
           <ImagePreview :mediaSrc="attachments[0].value" />
         </div>
         <!-- file -->
-        <div v-if="attachments.length && attachments[0].type === 'file'">
+        <div v-if="attachments.length && attachments[0].type === 'file'" style="width: 200px;">
           <a :href="download(attachments[0].value)" target="_blank">
             <div>
               <div
