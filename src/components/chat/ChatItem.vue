@@ -5,12 +5,9 @@
   >
     <UserAvatarAndName :name="name" :group="group" :avatarUrl="avatarUrl">
       <template #subtitle>
-        <!-- <v-list-item-subtitle
-          class="grey--text text-truncate"
-          :class="[active ? 'text--lighten-3' : 'text--darken-1']"
-        >
-          текст последнего сообщенияывфывфывфы
-        </v-list-item-subtitle> -->
+        <v-list-item-subtitle>
+          {{ lastMessage }}
+        </v-list-item-subtitle>
       </template>
     </UserAvatarAndName>
   </div>
@@ -40,6 +37,10 @@ export default {
       type: String,
       default: "",
     },
+    lastMessage: {
+      type: String,
+      default: "",
+    },
     group: {
       type: Boolean,
       default: false,
@@ -64,8 +65,8 @@ export default {
 
 .active {
   background-color: #4d6d81;
-  ::v-deep .v-list-item__title {
-    color: #fff;
+  ::v-deep .v-list-item__title, .v-list-item__subtitle {
+    color: #fff !important;
   }
 }
 </style>
