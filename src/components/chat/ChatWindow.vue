@@ -27,8 +27,6 @@
           v-if="selectedChat && selectedChat.type === 1"
           :specialty="this.getDoctorByUserId(this.getCompanionID).info.doctor_specialty"
           :lang="this.getDoctorByUserId(this.getCompanionID).info.serviceLanguages.join(', ')"
-          :uni="this.getDoctorByUserId(this.getCompanionID).medical_university"
-          :country="this.getDoctorByUserId(this.getCompanionID).country"
         />
 
         <CompanionMedia
@@ -84,16 +82,16 @@ export default {
     ...State_doctors(['getDoctorByUserId']),
     formattedMessages() {
       const messages = [...this.messages];
-      const result = messages.reduce((prev, item, index, arr) => {
-        item.showDate = false;
-        // if (arr[index + 1]) {
-        //   if (
-        //     dayjs(arr[index].createdon).format("YYYY-MM-DD") !==
-        //     dayjs(arr[index + 1].createdon).format("YYYY-MM-DD")
-        //   ) {
-        //     item.showDate = true;
-        //   }
-        // }
+      messages.reduce((prev, item, index, arr) => {
+        item.showDate = true
+        if (arr[index - 1]) {
+          if (
+            dayjs(arr[index - 1].createdon).format("YYYY-MM-DD") ===
+            dayjs(arr[index].createdon).format("YYYY-MM-DD")
+          ) {
+            item.showDate = false
+          }
+        }
         if (item.user_id !== this.getUserId) {
           item.showAvatar = true;
           if (this.selectedChat && this.selectedChat.type === 1) {

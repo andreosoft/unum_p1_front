@@ -21,18 +21,6 @@
           </v-list-item-title>
           <v-list-item-subtitle>Страна</v-list-item-subtitle>
         </v-list-item>
-        <v-list-item v-if="lang" class="flex-column align-items-start">
-          <v-list-item-title class="align-self-start">
-            {{ lang }}
-          </v-list-item-title>
-          <v-list-item-subtitle>Язык</v-list-item-subtitle>
-        </v-list-item>
-        <v-list-item v-if="uni" class="flex-column align-items-start">
-          <v-list-item-title class="align-self-start">
-            {{ uni }}
-          </v-list-item-title>
-          <v-list-item-subtitle>Образование</v-list-item-subtitle>
-        </v-list-item>
       </v-list>
     </div>
   </v-card>
@@ -47,14 +35,6 @@ export default {
       default: "",
     },
     country: {
-      type: String,
-      default: "",
-    },
-    lang: {
-      type: String,
-      default: "",
-    },
-    uni: {
       type: String,
       default: "",
     },
