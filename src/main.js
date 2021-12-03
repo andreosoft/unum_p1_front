@@ -5,7 +5,8 @@ import store from './store'
 import vuetify from './plugins/vuetify'
 import Vuelidate from 'vuelidate'
 import { messaging, getToken } from './firebase'
-
+import './libs/registerComponents';
+import './libs/translations';
 import VuePhoneNumberInput from 'vue-phone-number-input';
 import 'vue-phone-number-input/dist/vue-phone-number-input.css';
 import './registerServiceWorker'
