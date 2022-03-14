@@ -8,6 +8,22 @@
         </v-alert>
       </div>
     </v-main>
+    <div class="alerts">
+      <transition-group
+        tag="div"
+        name="list-complete"
+        class="alerts__container"
+      >
+        <v-alert
+          v-for="(alert, index) in alerts"
+          :key="alert.id"
+          :class="{ 'mb-3': index !== alerts.length - 1 }"
+          :type="alert.type"
+        >
+          {{ alert.text }}
+        </v-alert>
+      </transition-group>
+    </div>
   </v-app>
 </template>
 

@@ -25,9 +25,14 @@
       app
       width="260"
     >
-      <v-list class="d-flex pa-4">
-        <v-list-item class="pa-0 rounded-lg" link :to="{ name: 'Profile' }">
-          <v-list-item-avatar color="rgb(80, 49, 101)">
+      <v-list class="d-flex pa-2">
+        <v-list-item
+          class="pa-0 rounded-lg"
+          style="overflow: hidden"
+          link
+          :to="{ name: 'Profile' }"
+        >
+          <v-list-item-avatar color="rgb(80, 49, 101)" class="mx-2">
             <v-img :src="getPhotoURL(userProfile.photo)"></v-img>
           </v-list-item-avatar>
           <v-list-item-content>
@@ -60,9 +65,7 @@
         </v-list-item>
         <v-list-item>
           <v-list-item-action>
-            <v-btn color="primary" @click="logout">
-              log out
-            </v-btn>
+            <v-btn color="primary" @click="logout">{{ $t("Sign out") }}</v-btn>
           </v-list-item-action>
         </v-list-item>
       </v-list>
@@ -72,17 +75,14 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from "vuex";
-const { mapActions, mapState } = createNamespacedHelpers("auth");
-const {
-  mapActions: Action_doctors,
-  mapGetters: Getters_doctors,
-} = createNamespacedHelpers("doctors");
+import { createNamespacedHelpers, mapState } from "vuex";
+const { mapActions } = createNamespacedHelpers("auth");
+const { mapActions: Action_doctors, mapGetters: Getters_doctors } =
+  createNamespacedHelpers("doctors");
 const { mapActions: Action_events } = createNamespacedHelpers("events");
 const { mapActions: Action_chats } = createNamespacedHelpers("chats");
-const { mapActions: Acition_clinicalRecords } = createNamespacedHelpers(
-  "clinicalRecords"
-);
+const { mapActions: Acition_clinicalRecords } =
+  createNamespacedHelpers("clinicalRecords");
 export default {
   data() {
     return {
@@ -92,7 +92,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["userProfile"]),
+    ...mapState("auth", ["userProfile"]),
     ...Getters_doctors(["getPhotoURL"]),
     navLinks() {
       return [
@@ -110,7 +110,7 @@ export default {
           name: "Chats",
           title: "Чаты",
           icon: "mdi-message-text",
-          notification: this.$root.chatsNotification
+          notification: this.$root.chatsNotification,
         },
         {
           name: "My Doctors",
@@ -122,8 +122,8 @@ export default {
           title: "Все врачи",
           icon: "mdi-account-group",
         },
-      ]
-    }
+      ];
+    },
   },
   methods: {
     ...mapActions(["logout"]),

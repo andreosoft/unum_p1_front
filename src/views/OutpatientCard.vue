@@ -1,130 +1,29 @@
 <template>
   <div class="px-2">
     <h1>История посещений</h1>
-    <v-expansion-panels v-model="panels">
-      <v-expansion-panel
-        v-for="(item, index) in formattedClinicalRecords"
-        :key="index"
-        class="mb-2"
-        :disabled="!item.second_appointments.length"
-      >
-        <div
-          v-show="!item.second_appointments.length"
-          @click="showAppointmentDialog(item)"
-          class="records__overlay"
-        ></div>
-        <v-expansion-panel-header>
-          {{ item.data | getDiagnos }} ({{ item.data | getCreatedDate }} -
-          {{
-            getDoctorSpecialty(item.doctor_id) &&
-              getDoctorSpecialty(item.doctor_id).toLowerCase()
-          }}
-          <!-- <pre>{{ getDoctorSpecialty(item.doctor_id) }}</pre> -->
-          {{ getDoctorName(item.doctor_id) }})
-          <span
-            v-show="index === panels"
-            @click="showAppointmentDialog(item)"
-            class="ml-4 grey--text"
-            >(показать первичную запись)</span
-          >
-        </v-expansion-panel-header>
-        <v-expansion-panel-content v-if="item.second_appointments.length">
-          <v-card>
-            <v-hover
-              v-for="(event, index) in item.second_appointments"
-              :key="index"
-            >
-              <template v-slot="{ hover }">
-                <v-card-text
-                  :class="{ record__card: hover }"
-                  @click="showAppointmentDialog(event)"
-                >
-                  {{ event.data | getDiagnos }} ({{
-                    event.data | getCreatedDate
-                  }}
-                  -
-                  {{ getDoctorSpecialty(event.doctor_id).toLowerCase() }}
-                  {{ getDoctorName(event.doctor_id) }})
-                </v-card-text>
-              </template>
-            </v-hover>
-          </v-card>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
-    <v-dialog
-      v-model="appointmentDetailsDialog"
-      v-if="selectedAppointment"
-      fullscreen
-      content-class="outpatient-dialog"
-    >
-      <v-toolbar dark color="primary" class="d-flex justify-content-between">
-        <v-toolbar-title>Просмотр записи</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-btn icon dark @click="appointmentDetailsDialog = false">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-      </v-toolbar>
-
-      <v-card class="pa-4 rounded-0" style="width: 100%;">
-        <v-simple-table>
-          <template #default>
-            <tbody>
-              <tr>
-                <td>Лечащий врач</td>
-                <td>{{ getDoctorName(selectedAppointment.doctor_id) }}</td>
-              </tr>
-              <tr>
-                <td>Диагноз</td>
-                <td>{{ JSON.parse(selectedAppointment.data).diagnos }}</td>
-              </tr>
-              <tr v-show="getDescription.length">
-                <td>Описание</td>
-                <td>{{ getDescription }}</td>
-              </tr>
-              <tr v-show="getRecommendations.length">
-                <td>Рекомендации</td>
-                <td>{{ getRecommendations }}</td>
-              </tr>
-              <tr>
-                <td>Дата записи</td>
-                <td>{{ selectedAppointment.createdon | formatDate }}</td>
-              </tr>
-              <tr>
-                <td>Время записи</td>
-                <td>{{ selectedAppointment.createdon | $_formatTime }}</td>
-              </tr>
-              <tr v-for="(item, index) in getFiles" :key="index">
-                <td>
-                  <a :href="download(item.file)" target="_blank">
-                    Скачать прикрепленный файл
-                  </a>
-                </td>
-                <td>
-                  {{ item.name }}
-                </td>
-                <td></td>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
-      </v-card>
-    </v-dialog>
+    <v-divider class="mt-1 mb-3"></v-divider>
+    <PatientTabClinicalRecords
+      :records="formattedClinicalRecords2"
+      :titleArray="titleArray"
+    />
   </div>
 </template>
 
 <script>
 import { createNamespacedHelpers } from "vuex";
+import PatientTabClinicalRecords from "@/components/patient/tab/PatientTabClinicalRecords";
 import api from "./../config/api";
 import filters from "./../mixins/filters";
+import { models, buildObjects } from "@/components/patient/mixings";
 const { mapState } = createNamespacedHelpers("clinicalRecords");
 const { mapGetters: Getters_doctors } = createNamespacedHelpers("doctors");
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
 dayjs.locale("ru");
 export default {
-  mixins: [filters],
+  mixins: [filters, models, buildObjects],
   name: "OutpatientCard",
+  components: { PatientTabClinicalRecords },
   data() {
     return {
       appointmentDetailsDialog: false,
@@ -139,6 +38,42 @@ export default {
       "getDoctorName",
       "getDoctorSpecialty",
     ]),
+    formattedClinicalRecords2() {
+      const first_appointments = [];
+      const second_appointments = [];
+      const result_array = [];
+      let records = JSON.parse(JSON.stringify(this.clinicalRecords));
+      records &&
+        records.map((event) => {
+          if (event.type_id === 1) {
+            first_appointments.push(event);
+          } else if (event.type_id === 2) {
+            second_appointments.push(event);
+          }
+        });
+      first_appointments.map((event) => {
+        event.second_appointments = [];
+        event.name =
+          JSON.parse(event.data)?.diagnosis?.diagnos ||
+          JSON.parse(event.data)?.diagnos ||
+          "";
+        event.children = [];
+        second_appointments.map((event2) => {
+          let parent_id = event2.parent_id;
+          let objDiagnos = JSON.parse(event2.data);
+          if (event.id === parent_id) {
+            event2.name =
+              objDiagnos?.diagnosis?.diagnos ||
+              objDiagnos?.diagnos ||
+              event.name;
+            event.children.push(event2);
+          }
+        });
+        result_array.push(event);
+      });
+      return result_array;
+    },
+
     formattedClinicalRecords() {
       const first_appointments = [];
       const second_appointments = [];
@@ -217,8 +152,14 @@ export default {
       this.selectedAppointment = event;
     },
     download(id) {
-      return `http://api.neomedy.com/api${api.get_file}/${id}`;
+      return `http://api.neomedy.com${api.getFile}/${id}`;
     },
+  },
+  async created() {
+    this.loading = true;
+    //await this.fetchSelectedPatient(this.$route.params.id);
+    //await this.fetchPatientClinicalRecordsById(this.$route.params.id);
+    this.loading = false;
   },
 };
 </script>

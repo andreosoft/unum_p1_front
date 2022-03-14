@@ -1,6 +1,8 @@
-import dayjs from "dayjs";
-import axios from "./../config/axios";
-import api from "./../config/api";
+/** @format */
+
+import dayjs from 'dayjs';
+import axios from '@/config/axios';
+import api from '@/config/api';
 
 const state = {
   events: [],
@@ -13,9 +15,7 @@ const getters = {
     return state.events;
   },
   getValidEvents(state) {
-    return state.events.filter(
-      (event) => dayjs().isBefore(event.start) && event.type_id === 1
-    );
+    return state.events.filter((event) => dayjs().isBefore(event.start) && event.type_id === 1);
   },
 };
 
@@ -41,37 +41,37 @@ const mutations = {
 const actions = {
   addEvent({ commit, dispatch }, event) {
     return axios.post(api.set_event, event).then((res) => {
-      commit("ADD_EVENT", res.data.data);
+      commit('ADD_EVENT', res.data.data);
       dispatch(
-        "alerts/addAlert",
+        'alerts/addAlert',
         {
-          type: "success",
-          text: "Вы записались на прием к этому врачу",
+          type: 'success',
+          text: 'Вы записались на прием к этому врачу',
         },
         { root: true }
       );
-      dispatch("doctors/fetchMyDoctors", {}, { root: true });
+      dispatch('doctors/fetchMyDoctors', {}, { root: true });
     });
   },
   fetchEvents({ commit }) {
     return axios.get(api.get_events).then((res) => {
-      commit("SET_EVENTS", res.data.data);
-      commit("SET_EVENTS_FETCHED", true);
+      commit('SET_EVENTS', res.data.data);
+      commit('SET_EVENTS_FETCHED', true);
     });
   },
   deleteEvent({ commit, dispatch }, { eventId, doctorId }) {
     return axios.delete(api.delete_event + eventId).then((res) => {
-      commit("DELETE_EVENT", eventId);
+      commit('DELETE_EVENT', eventId);
       dispatch(
-        "alerts/addAlert",
+        'alerts/addAlert',
         {
-          type: "success",
-          text: "Запись успешно удалена",
+          type: 'success',
+          text: 'Запись успешно удалена',
         },
         { root: true }
       );
 
-      dispatch("doctors/fetchDoctorSchedule", doctorId, { root: true });
+      dispatch('doctors/fetchDoctorSchedule', doctorId, { root: true });
     });
   },
 };

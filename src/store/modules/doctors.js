@@ -1,5 +1,7 @@
-import axios from "./../config/axios";
-import api from "./../config/api";
+/** @format */
+
+import axios from '@/config/axios';
+import api from '@/config/api';
 const state = {
   doctors: [],
   myDoctors: [],
@@ -35,7 +37,7 @@ const getters = {
       if (!doctor) throw Error;
       return doctor.info.doctor_specialty;
     } catch (err) {
-      return "";
+      return '';
     }
   },
   getSelectedDoctorSpecialty: (state) => {
@@ -43,25 +45,25 @@ const getters = {
       const parsedInfo = JSON.parse(state.selectedDoctor.info);
       return parsedInfo.doctor_specialty;
     } catch (err) {
-      return "";
+      return '';
     }
   },
   imageSrc() {
     return (id) => api.get_photo + `/${id}`;
   },
   getDoctorByUserId: (state) => (userId) => {
-    return state.doctors.find(doc => doc.user_id == userId)
-  }
+    return state.doctors.find((doc) => doc.user_id == userId);
+  },
 };
 const mutations = {
   SET_DOCTORS(state, doctors) {
-    doctors.map(doc => {
+    doctors.map((doc) => {
       try {
-        doc.info = JSON.parse(doc.info)
+        doc.info = JSON.parse(doc.info);
       } catch {
-        doc.info = {}
+        doc.info = {};
       }
-    })
+    });
     state.doctors = doctors;
   },
   SET_MY_DOCTORS(state, myDoctors) {
@@ -86,22 +88,22 @@ const mutations = {
 const actions = {
   fetchDoctors({ commit, dispatch }) {
     return axios.get(api.all_doctors).then((res) => {
-      commit("SET_DOCTORS", res.data.data);
-      commit("SET_DOCTORS_FETCHED", true);
+      commit('SET_DOCTORS', res.data.data);
+      commit('SET_DOCTORS_FETCHED', true);
       return res;
     });
   },
   fetchMyDoctors({ commit }) {
     return axios.get(api.my_doctors).then((res) => {
-      commit("SET_MY_DOCTORS", res.data.data);
-      commit("SET_MY_DOCTORS_FETCHED", true);
+      commit('SET_MY_DOCTORS', res.data.data);
+      commit('SET_MY_DOCTORS_FETCHED', true);
     });
   },
   fetchDoctorById({ commit, dispatch }, id) {
     return axios.get(api.single_doctor + id).then((res) => {
-      commit("SET_SELECTED_DOCTOR", res.data.data);
+      commit('SET_SELECTED_DOCTOR', res.data.data);
       // setTimeout(() => {
-      commit("SET_SELECTED_DOCTOR_FETCHED", true);
+      commit('SET_SELECTED_DOCTOR_FETCHED', true);
       // dispatch(
       //   "alerts/addAlert",
       //   {
@@ -116,10 +118,11 @@ const actions = {
   fetchDoctorSchedule({ commit }, doctorId) {
     return axios.get(api.doctor_schedule + doctorId).then((res) => {
       if (res.data.data) {
-        commit("SET_DOCTOR_SCHEDULE", res.data.data.schedule);
+        console.log('DOCTOR SHED ', res.data.data.schedule, doctorId);
+        commit('SET_DOCTOR_SCHEDULE', res.data.data.schedule);
         return;
       }
-      commit("SET_DOCTOR_SCHEDULE", {});
+      commit('SET_DOCTOR_SCHEDULE', {});
     });
   },
 };

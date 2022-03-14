@@ -1,6 +1,6 @@
-import axios from "./../config/axios";
-import api from "./../config/api";
-import router from "./../router";
+import axios from '@/config/axios';
+import api from '@/config/api';
+import router from '@/router';
 const state = {
   chats: [],
   messages: [],

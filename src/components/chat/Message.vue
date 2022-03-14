@@ -30,12 +30,20 @@
           <ImagePreview :mediaSrc="attachments[0].value" />
         </div>
         <!-- file -->
-        <div v-if="attachments.length && attachments[0].type === 'file'" style="width: 200px;">
+        <div
+          v-if="attachments.length && attachments[0].type === 'file'"
+          style="width: 200px"
+        >
           <a :href="download(attachments[0].value)" target="_blank">
             <div>
               <div
-                style="height: 100px; width: 100%; background-color: white;"
-                class="d-flex justify-content-center align-items-center flex-column"
+                style="height: 100px; width: 100%; background-color: white"
+                class="
+                  d-flex
+                  justify-content-center
+                  align-items-center
+                  flex-column
+                "
               >
                 <v-icon>mdi-download</v-icon>
                 document
@@ -56,8 +64,8 @@
         <div v-if="attachments.length && attachments[0].type === 'audio'">
           <audio :src="download(attachments[0].value)" controls></audio>
         </div>
-        <v-card-text class="pa-0 d-flex" style="justify-content: flex-end;">
-          <span style="font-style: italic;">{{ date | formatTime }}</span>
+        <v-card-text class="pa-0 d-flex" style="justify-content: flex-end">
+          <span style="font-style: italic">{{ date | formatTime }}</span>
         </v-card-text>
       </v-card>
     </div>
@@ -128,7 +136,7 @@ export default {
   },
   methods: {
     download(id) {
-      return `https://api.neomedy.com/api/${api.get_file}/${id}`;
+      return `https://api.neomedy.com${api.getFile}/${id}`;
     },
   },
 };

@@ -1,6 +1,8 @@
-import axios from "./../config/axios";
-import api from "./../config/api";
-import router from "./../router";
+/** @format */
+
+import axios from '@/config/axios';
+import api from '@/config/api';
+import router from '@/router';
 
 const state = {
   authStatus: false,
@@ -43,59 +45,59 @@ const mutations = {
 
 const actions = {
   login({ commit, dispatch }, { email, password }) {
-    return axios.post(api.get_token, { login: email, password }).then((res) => {
-      if (res.data.status === "error" || res.data.data.profile.role !== 1) {
+    return axios.post(api.get_token, { login: email, password }).then(async (res) => {
+      if (res.data.status === 'error' || res.data.data.profile.role !== 1) {
         dispatch(
-          "alerts/addAlert",
+          'alerts/addAlert',
           {
-            type: "error",
+            type: 'error',
             text: res.data.error,
           },
           { root: true }
         );
         return;
       }
-      commit("SET_AUTH_STATUS", true);
+      commit('SET_AUTH_STATUS', true);
       window.localStorage.setItem(
-        "neomedy",
+        'neomedy',
         JSON.stringify({
           login: res.data.data.profile.login,
           token: res.data.data.token,
         })
       );
       axios.defaults.headers.common.Authorization = res.data.data.token;
-      dispatch("fetchUserProfile");
-      router.push({ name: "Home" });
+      dispatch('fetchUserProfile');
+      router.push({ name: 'Home' });
     });
   },
   confirmLogin({ commit, dispatch }, login) {
     return axios.get(api.confirm_login, { params: { login } }).then((res) => {
-      commit("SET_AUTH_STATUS", true);
+      commit('SET_AUTH_STATUS', true);
       return res.data.data;
     });
   },
   logout({ commit }) {
-    commit("SET_AUTH_STATUS", false);
+    commit('SET_AUTH_STATUS', false);
     window.localStorage.clear();
-    router.push({ name: "Login" });
+    router.push({ name: 'Login' });
     delete axios.defaults.headers.common.Authorization;
   },
   signup({ dispatch }, data) {
-    return dispatch("confirmLogin", data.user.login).then((status) => {
+    return dispatch('confirmLogin', data.user.login).then((status) => {
       if (!status) {
         return axios.post(api.patient_registration, data).then(async (res) => {
-          await dispatch("login", {
+          await dispatch('login', {
             email: data.user.login,
             password: data.user.password,
           });
-          dispatch("fetchUserProfile");
+          dispatch('fetchUserProfile');
         });
       }
       dispatch(
-        "alerts/addAlert",
+        'alerts/addAlert',
         {
-          type: "error",
-          text: "Данный Email уже занят",
+          type: 'error',
+          text: 'Данный Email уже занят',
         },
         {
           root: true,
@@ -106,38 +108,51 @@ const actions = {
   fetchUserProfile({ commit, dispatch }) {
     return axios.get(api.get_profile).then((res) => {
       try {
-        commit("SET_USER_PROFILE", res.data.data);
+        commit('SET_USER_PROFILE', res.data.data);
+        dispatch('fetchLangItems', { lang: 'ru', type: 'common' }); //res.data?.profile.lang ||
+        dispatch('fetchLangItems', { lang: 'ru', type: 'doctor' });
       } catch (err) {
+        console.log(err);
         dispatch(
-          "alerts/addAlert",
+          'alerts/addAlert',
           {
-            type: "error",
-            text: "Профиль не найден",
+            type: 'error',
+            text: 'Профиль не найден',
           },
           {
             root: true,
           }
         );
         window.localStorage.clear();
-        router.push({ name: "Login" });
+        router.push({ name: 'Login' });
       }
     });
   },
   updateProfile({ state, commit, dispatch }) {
-    console.log("saving...");
-    commit("SET_PROFILE_UPDATING_STATE", true);
+    console.log('saving...');
+    commit('SET_PROFILE_UPDATING_STATE', true);
     return axios.post(api.update_profile, state.userProfile).then(() => {
-      commit("SET_PROFILE_UPDATING_STATE", false);
-      dispatch("fetchUserProfile");
-      console.log("saved");
+      commit('SET_PROFILE_UPDATING_STATE', false);
+      dispatch('fetchUserProfile');
+      console.log('saved');
     });
   },
   uploadUserImage({ commit }, file) {
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append('file', file);
     return axios.post(api.postImage, formData).then((res) => {
-      commit("SET_USER_PROFILE_PHOTO", res.data.data.file);
+      commit('SET_USER_PROFILE_PHOTO', res.data.data.file);
     });
+  },
+  fetchLangItems({ dispatch }, { lang, type }) {
+    return dispatch(
+      'lang/fetchLangItems',
+      {
+        lang,
+        type,
+      },
+      { root: true }
+    );
   },
 };
 
